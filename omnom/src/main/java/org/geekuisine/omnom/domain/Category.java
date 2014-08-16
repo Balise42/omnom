@@ -3,16 +3,16 @@ package org.geekuisine.omnom.domain;
 public class Category {
 	int categoryId;
 	String name;
-	Category topCategory;
+	int topCategoryId;
 	
 	public Category(){
 		super();
 	}
 	
-	public Category(int categoryId, String name, Category topCategory){
+	public Category(int categoryId, String name, int topCategoryId){
 		this.categoryId = categoryId;
 		this.name = name;
-		this.topCategory = topCategory;
+		this.topCategoryId = topCategoryId;
 	}
 
 	public int getCategoryId() {
@@ -31,12 +31,12 @@ public class Category {
 		this.name = name;
 	}
 
-	public Category getTopCategory() {
-		return topCategory;
+	public int getTopCategoryId() {
+		return topCategoryId;
 	}
 
-	public void setTopCategory(Category topCategory) {
-		this.topCategory = topCategory;
+	public void setTopCategoryId(int topCategoryId) {
+		this.topCategoryId = topCategoryId;
 	}
 
 }
