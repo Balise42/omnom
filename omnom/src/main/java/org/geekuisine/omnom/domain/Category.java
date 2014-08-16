@@ -5,11 +5,11 @@ public class Category {
 	String name;
 	Category topCategory;
 	
-	Category(){
+	public Category(){
 		super();
 	}
 	
-	Category(int categoryId, String name, Category topCategory){
+	public Category(int categoryId, String name, Category topCategory){
 		this.categoryId = categoryId;
 		this.name = name;
 		this.topCategory = topCategory;
