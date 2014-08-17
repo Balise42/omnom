@@ -5,21 +5,31 @@ import java.util.List;
 
 import org.geekuisine.omnom.domain.Category;
 import org.geekuisine.omnom.domain.Ingredient;
+import org.geekuisine.omnom.repository.CategoryRepository;
 import org.geekuisine.omnom.repository.IngredientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class InMemoryIngredientRepository implements IngredientRepository {
 	private List<Ingredient> repository;
 	private int nextIndex;
+	@Autowired
+	private CategoryRepository categoryRepository;
 	
 	public InMemoryIngredientRepository(){
-		repository = new ArrayList<Ingredient>();
+		super();
 		nextIndex = 0;
+		repository = new ArrayList<Ingredient>();
 	}
 	
-	/* Ingredients should be ID'd from 0 to ingredients.size()-1 */
-	public InMemoryIngredientRepository(List<Ingredient> ingredients){
-		repository = ingredients;
-		nextIndex = ingredients.size();
+	public void init(){
+		nextIndex = 0;
+		List<String> chickenNames = new ArrayList<String>();
+		chickenNames.add("chicken");
+		Ingredient chicken = new Ingredient(getNextIndex(), chickenNames, categoryRepository.getCategory("chicken"));
+		repository = new ArrayList<Ingredient>();
+		repository.add(chicken);
 	}
 	
 	public List<Ingredient> getAllIngredients(){
