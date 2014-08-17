@@ -13,7 +13,7 @@ public class Ingredient {
 		names = new ArrayList<String>();
 	}
 	
-	Ingredient(int ingredientId, List<String> names, Category category){
+	public Ingredient(int ingredientId, List<String> names, Category category){
 		this();
 		this.ingredientId = ingredientId;
 		this.names = names;
