@@ -43,4 +43,13 @@ public class Ingredient {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
+	
+	public boolean isIngredient(String s){
+		for(String name : names){
+			if(name.equalsIgnoreCase(s)){
+				return true;
+			}
+		}
+		return false;
+	}
 }
