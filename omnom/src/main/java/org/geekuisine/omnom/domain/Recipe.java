@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Recipe {
+	int recipeId;
 	String name;
 	Map<Ingredient, Quantity> ingredients;
 	int numPersons;
@@ -14,10 +15,18 @@ public class Recipe {
 	Quantity restTime;
 	List<String> steps;
 	
-	Recipe(){
+	public Recipe(){
 		super();
 		ingredients = new HashMap<Ingredient,Quantity>();
 		steps = new ArrayList<String>();
+	}
+
+	public int getRecipeId() {
+		return recipeId;
+	}
+
+	public void setRecipeId(int recipeId) {
+		this.recipeId = recipeId;
 	}
 
 	public String getName() {
