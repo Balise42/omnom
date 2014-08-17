@@ -35,9 +35,12 @@ public class CategoryRepositoryTest {
 		Assert.fail();
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void getCategory_should_fail(){
 		Category c = rep.getCategory("BÉPOÈDLJAUIE,CTNSRTÀY.K'QGF");
+		if(c != null){
+			Assert.fail();
+		}
 	}
 	
 	@Test

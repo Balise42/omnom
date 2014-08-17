@@ -35,7 +35,7 @@ public class InMemoryCategoryRepository implements CategoryRepository {
 				return cat;
 			}
 		}
-		throw new IllegalArgumentException("No such category");
+		return null;
 	}
 	
 	@Override
