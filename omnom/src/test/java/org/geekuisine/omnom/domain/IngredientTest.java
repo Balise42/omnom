@@ -1,8 +1,5 @@
 package org.geekuisine.omnom.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.Assert;
@@ -12,11 +9,7 @@ public class IngredientTest {
 	
 	@Before
 	public void init(){
-		Category c = new Category();
-		List<String> names = new ArrayList<String>();
-		names.add("abCD");
-		names.add("efgh");
-		ingredient = new Ingredient(0, names, c);
+		ingredient = new Ingredient(0, "abCD");
 	}
 	
 	@Test
