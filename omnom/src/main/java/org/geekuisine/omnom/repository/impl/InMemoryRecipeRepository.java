@@ -12,7 +12,6 @@ import org.geekuisine.omnom.domain.Recipe;
 import org.geekuisine.omnom.repository.IngredientRepository;
 import org.geekuisine.omnom.repository.RecipeRepository;
 import org.joda.time.Duration;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -20,16 +19,12 @@ public class InMemoryRecipeRepository implements RecipeRepository {
 	List<Recipe> recipeRepository;
 	int nextId;
 	
-	@Autowired
 	IngredientRepository ingredientRepository;
 	
 	public InMemoryRecipeRepository(){
 		recipeRepository = new ArrayList<Recipe>();
 		nextId = 0;
-	}
-	
-	public void init(){
-		ingredientRepository.init();
+		ingredientRepository = new InMemoryIngredientRepository();
 		nextId = 0;
 		recipeRepository = new ArrayList<Recipe>();
 		Recipe recipe = new Recipe();

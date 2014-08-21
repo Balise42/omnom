@@ -14,14 +14,12 @@ public class RecipeController {
 	
 	@RequestMapping("/recipes")
 	public String getAllRecipes(Model model){
-		recipeService.init();
 		model.addAttribute("recipes", recipeService.getAllRecipes());
 		return "recipes";
 	}
 	
 	@RequestMapping("/recipe/{id}")
 	public String getRecipeById(Model model, @PathVariable("id") int id){
-		recipeService.init();
 		model.addAttribute("recipe", recipeService.getRecipeById(id));
 		return "recipe";
 	}

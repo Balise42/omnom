@@ -1,24 +1,16 @@
 package org.geekuisine.omnom.repository;
 
+import org.geekuisine.omnom.repository.impl.InMemoryRecipeRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/test-DispatcherServlet-context.xml")
-@WebAppConfiguration
 public class RecipeRepositoryTest {
-	@Autowired 
 	RecipeRepository recipeRepository;
 	
 	@Before
 	public void init(){
-		recipeRepository.init();
+		recipeRepository = new InMemoryRecipeRepository();
 	}
 	
 	@Test
