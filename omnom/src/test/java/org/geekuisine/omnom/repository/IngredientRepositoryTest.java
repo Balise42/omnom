@@ -6,22 +6,24 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.geekuisine.omnom.domain.Category;
 import org.geekuisine.omnom.domain.Ingredient;
-import org.geekuisine.omnom.repository.impl.InMemoryIngredientRepository;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("/test-DispatcherServlet-context.xml")
+@WebAppConfiguration
 public class IngredientRepositoryTest {
+	@Autowired
 	IngredientRepository rep;
 	
 	@Before
 	public void init(){
-		List<Ingredient> ingredients = new ArrayList<Ingredient>();
-		Category c = new Category();
-		List<String> names = new ArrayList<String>();
-		names.add("chicken");
-		Ingredient ingredient = new Ingredient(0, names, c);
-		ingredients.add(ingredient);
-		rep = new InMemoryIngredientRepository(ingredients);
+		rep.init();
 	}
 	
 	@Test 
