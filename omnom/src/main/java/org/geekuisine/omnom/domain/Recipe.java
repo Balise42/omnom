@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.datatype.Duration;
+import org.joda.time.Duration;
 
 public class Recipe {
 	int recipeId;
