@@ -23,4 +23,8 @@ public class RecipeServiceImpl implements RecipeService {
 		return recipeRepository.getAllRecipes();
 	} 
 
+	@Override
+	public void init(){
+		recipeRepository.init();
+	}
 }
