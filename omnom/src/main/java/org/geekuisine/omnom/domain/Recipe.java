@@ -5,14 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.datatype.Duration;
+
 public class Recipe {
 	int recipeId;
 	String name;
 	Map<Ingredient, Quantity> ingredients;
 	int numPersons;
-	Quantity cookingTime;
-	Quantity prepTime;
-	Quantity restTime;
+	Duration cookingTime;
+	Duration prepTime;
+	Duration restTime;
 	List<String> steps;
 	
 	public Recipe(){
@@ -53,27 +55,27 @@ public class Recipe {
 		this.numPersons = numPersons;
 	}
 
-	public Quantity getCookingTime() {
+	public Duration getCookingTime() {
 		return cookingTime;
 	}
 
-	public void setCookingTime(Quantity cookingTime) {
+	public void setCookingTime(Duration cookingTime) {
 		this.cookingTime = cookingTime;
 	}
 
-	public Quantity getPrepTime() {
+	public Duration getPrepTime() {
 		return prepTime;
 	}
 
-	public void setPrepTime(Quantity prepTime) {
+	public void setPrepTime(Duration prepTime) {
 		this.prepTime = prepTime;
 	}
 
-	public Quantity getRestTime() {
+	public Duration getRestTime() {
 		return restTime;
 	}
 
-	public void setRestTime(Quantity restTime) {
+	public void setRestTime(Duration restTime) {
 		this.restTime = restTime;
 	}
 
