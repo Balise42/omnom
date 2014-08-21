@@ -22,10 +22,18 @@ public class InMemoryCategoryRepository implements CategoryRepository {
 		Category chicken = new Category(getNextId(), "Chicken", poultry.getCategoryId());
 		Category duck = new Category(getNextId(), "Duck", poultry.getCategoryId());
 		Category chickenLeg = new Category(getNextId(), "Chicken leg", chicken.getCategoryId());
+		Category condiment = new Category(getNextId(), "Condiment", ingredient.getCategoryId());
+		Category salt = new Category(getNextId(), "Salt", condiment.getCategoryId());
+		Category fat = new Category(getNextId(), "Fat", ingredient.getCategoryId());
+		Category butter = new Category(getNextId(), "Butter", fat.getCategoryId());
 		categoryRepository.add(poultry);
 		categoryRepository.add(chicken);
 		categoryRepository.add(duck);
 		categoryRepository.add(chickenLeg);
+		categoryRepository.add(condiment);
+		categoryRepository.add(salt);
+		categoryRepository.add(fat);
+		categoryRepository.add(butter);
 		
 	}
 	
