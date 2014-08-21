@@ -13,7 +13,9 @@ import org.geekuisine.omnom.repository.IngredientRepository;
 import org.geekuisine.omnom.repository.RecipeRepository;
 import org.joda.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class InMemoryRecipeRepository implements RecipeRepository {
 	List<Recipe> recipeRepository;
 	int nextId;
@@ -63,5 +65,14 @@ public class InMemoryRecipeRepository implements RecipeRepository {
 	@Override
 	public List<Recipe> getAllRecipes() {
 		return recipeRepository;
+	}
+	
+	public Recipe getRecipeById(int recipeId){
+		for(Recipe recipe : recipeRepository){
+			if(recipe.getRecipeId() == recipeId){
+				return recipe;
+			}
+		}
+		return null;
 	}
 }
