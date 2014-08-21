@@ -9,4 +9,5 @@ public interface IngredientRepository {
 	public List<Ingredient> getAllIngredients();
 	public Ingredient addIngredient(String name);
 	public Ingredient getIngredient(String name);
+	public int getNextAttributedId();
 }

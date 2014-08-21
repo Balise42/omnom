@@ -57,4 +57,9 @@ public class InMemoryIngredientRepository implements IngredientRepository {
 	private synchronized int getNextIndex(){
 		return nextIndex++;
 	}
+
+	@Override
+	public int getNextAttributedId() {
+		return nextIndex;
+	}
 }

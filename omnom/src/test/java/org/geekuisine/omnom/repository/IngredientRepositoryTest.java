@@ -31,7 +31,6 @@ public class IngredientRepositoryTest {
 	public void getIngredient_should_return_chicken(){
 		Ingredient i = rep.getIngredient("chicken");
 		Assert.assertNotNull(i);
-		Assert.assertEquals(i.getIngredientId(), 0);
 	}
 	
 	@Test
@@ -40,9 +39,10 @@ public class IngredientRepositoryTest {
 	}
 	
 	@Test 
-	public void addIngredient_insert_new_element_should_succeed_with_id_4(){
+	public void addIngredient_insert_new_element_should_succeed_with_next_id(){
+		int expectedId = rep.getNextAttributedId();
 		Ingredient i = rep.addIngredient("ground beef");
-		Assert.assertEquals(i.getIngredientId(), 3);
+		Assert.assertEquals(i.getIngredientId(), expectedId);
 	}
 	
 }
