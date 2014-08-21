@@ -1,8 +1,5 @@
 package org.geekuisine.omnom.repository;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert;
@@ -11,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.geekuisine.omnom.domain.Category;
 import org.geekuisine.omnom.domain.Ingredient;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -44,22 +40,9 @@ public class IngredientRepositoryTest {
 	}
 	
 	@Test 
-	public void addIngredient_insert_new_element_should_succeed_with_id_1(){
-		List<String> names = new ArrayList<String>();
-		names.add("ground beef");
-		Category c = new Category();
-		Ingredient i = rep.addIngredient(names, c);
-		Assert.assertEquals(i.getIngredientId(), 1);
-	}
-	
-	@Test 
-	public void addIngredient_insert_existing_element_should_succeed_with_id_0(){
-		List<String> names = new ArrayList<String>();
-		names.add("abcd");
-		names.add("chicken");
-		Category c = new Category();
-		Ingredient i = rep.addIngredient(names, c);
-		Assert.assertEquals(i.getIngredientId(), 0);
+	public void addIngredient_insert_new_element_should_succeed_with_id_4(){
+		Ingredient i = rep.addIngredient("ground beef");
+		Assert.assertEquals(i.getIngredientId(), 3);
 	}
 	
 }

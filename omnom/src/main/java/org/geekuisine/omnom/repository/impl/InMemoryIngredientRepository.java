@@ -3,19 +3,14 @@ package org.geekuisine.omnom.repository.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geekuisine.omnom.domain.Category;
 import org.geekuisine.omnom.domain.Ingredient;
-import org.geekuisine.omnom.repository.CategoryRepository;
 import org.geekuisine.omnom.repository.IngredientRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class InMemoryIngredientRepository implements IngredientRepository {
 	private List<Ingredient> repository;
 	private int nextIndex;
-	@Autowired
-	private CategoryRepository categoryRepository;
 	
 	public InMemoryIngredientRepository(){
 		super();
@@ -25,25 +20,27 @@ public class InMemoryIngredientRepository implements IngredientRepository {
 	
 	public void init(){
 		nextIndex = 0;
-		List<String> chickenNames = new ArrayList<String>();
-		chickenNames.add("chicken");
-		Ingredient chicken = new Ingredient(getNextIndex(), chickenNames, categoryRepository.getCategory("chicken"));
+		Ingredient chicken = new Ingredient(getNextIndex(), "chicken");
 		repository = new ArrayList<Ingredient>();
 		repository.add(chicken);
+		Ingredient butter = new Ingredient(getNextIndex(), "butter");
+		repository.add(butter);
+		Ingredient salt = new Ingredient(getNextIndex(), "salt");
+		repository.add(salt);
 	}
 	
 	public List<Ingredient> getAllIngredients(){
 		return repository;
 	}
 	
-	public Ingredient addIngredient(List<String> names, Category category){
-		for(String name : names){
-			Ingredient i = getIngredient(name);
-			if(i != null){
-				return i;
-			}
+	public Ingredient addIngredient(String name){
+		
+		Ingredient i = getIngredient(name);
+		if(i != null){
+			return i;
 		}
-		Ingredient i = new Ingredient(getNextIndex(), names, category);
+		
+		i = new Ingredient(getNextIndex(), name);
 		repository.add(i);
 		return i;
 	}

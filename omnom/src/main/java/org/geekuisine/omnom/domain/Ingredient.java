@@ -5,19 +5,11 @@ import java.util.List;
 
 public class Ingredient {
 	int ingredientId;
-	List<String> names;
-	Category category;
+	String name;
 	
-	Ingredient(){
-		super();
-		names = new ArrayList<String>();
-	}
-	
-	public Ingredient(int ingredientId, List<String> names, Category category){
-		this();
+	public Ingredient(int ingredientId, String name){
 		this.ingredientId = ingredientId;
-		this.names = names;
-		this.category = category;
+		this.name = name;
 	}
 
 	public int getIngredientId() {
@@ -28,27 +20,17 @@ public class Ingredient {
 		this.ingredientId = ingredientId;
 	}
 
-	public List<String> getNames() {
-		return names;
+	public String getName() {
+		return name;
 	}
 
-	public void setNames(List<String> names) {
-		this.names = names;
-	}
-
-	public Category getCategory() {
-		return category;
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public boolean isIngredient(String s){
-		for(String name : names){
-			if(name.equalsIgnoreCase(s)){
-				return true;
-			}
+		if(name.equalsIgnoreCase(s)){
+			return true;
 		}
 		return false;
 	}
