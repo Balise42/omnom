@@ -19,7 +19,7 @@
 			<div class="row">
 				<c:forEach items="${recipes}" var="recipe">
 					 <div class="col-sm-6 col-md-3" style="padding-bottom: 15px">
-					 	<h3>${recipe.name}</h3>
+					 	<h3><a href="recipe/${recipe.recipeId}">${recipe.name}</a></h3>
 					 </div>
 				</c:forEach>
 			</div>

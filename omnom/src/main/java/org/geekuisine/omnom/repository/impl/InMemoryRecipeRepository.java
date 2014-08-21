@@ -29,6 +29,7 @@ public class InMemoryRecipeRepository implements RecipeRepository {
 	}
 	
 	public void init(){
+		ingredientRepository.init();
 		nextId = 0;
 		recipeRepository = new ArrayList<Recipe>();
 		Recipe recipe = new Recipe();
