@@ -1,22 +1,29 @@
 package org.geekuisine.omnom.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Category {
 	int categoryId;
 	String name;
-	List<Integer> parentCategories;
+	Set<Integer> parentCategories;
 	
 	public Category(){
-		parentCategories = new ArrayList<Integer>();
+		parentCategories = new HashSet<Integer>();
 	}
 	
-	public Category(int categoryId, String name, int topCategoryId){
+	public Category(int categoryId, String name){
 		this();
+		if(categoryId != 0){
+			parentCategories.add(0);
+		}
 		this.categoryId = categoryId;
 		this.name = name;
-		parentCategories.add(topCategoryId);
+	}
+	
+	public Category(int categoryId, String name, Category parent){
+		this(categoryId, name);
+		addParent(parent);
 	}
 
 	public int getCategoryId() {
@@ -35,21 +42,15 @@ public class Category {
 		this.name = name;
 	}
 
-	public List<Integer> getParentCategories() {
+	public Set<Integer> getParentCategories() {
 		return parentCategories;
 	}
-
-	public void setTopCategoryId(List<Integer> parentCategories) {
-		this.parentCategories = parentCategories;
-	}
 	
-	public void addParent(int parent){
-		for(int cat : parentCategories){
-			if(cat == parent){
-				return;
-			}
+	public void addParent(Category parent){
+		parentCategories.add(parent.categoryId);
+		if(parent.categoryId != 0){
+			parentCategories.addAll(parent.getParentCategories());
 		}
-		parentCategories.add(parent);
 	}
 
 }

@@ -15,17 +15,17 @@ public class InMemoryCategoryRepository implements CategoryRepository {
 	public InMemoryCategoryRepository(){
 		nextId = 0;
 		categoryRepository = new ArrayList<Category>();
-		Category ingredient = new Category(getNextId(), "Ingredient", -1);
+		Category ingredient = new Category(getNextId(), "Ingredient");
 		categoryRepository.add(ingredient);
 		
-		Category poultry = new Category(getNextId(), "Poultry", ingredient.getCategoryId());
-		Category chicken = new Category(getNextId(), "Chicken", poultry.getCategoryId());
-		Category duck = new Category(getNextId(), "Duck", poultry.getCategoryId());
-		Category chickenLeg = new Category(getNextId(), "Chicken leg", chicken.getCategoryId());
-		Category condiment = new Category(getNextId(), "Condiment", ingredient.getCategoryId());
-		Category salt = new Category(getNextId(), "Salt", condiment.getCategoryId());
-		Category fat = new Category(getNextId(), "Fat", ingredient.getCategoryId());
-		Category butter = new Category(getNextId(), "Butter", fat.getCategoryId());
+		Category poultry = new Category(getNextId(), "Poultry", ingredient);
+		Category chicken = new Category(getNextId(), "Chicken", poultry);
+		Category duck = new Category(getNextId(), "Duck", poultry);
+		Category chickenLeg = new Category(getNextId(), "Chicken leg", chicken);
+		Category condiment = new Category(getNextId(), "Condiment", ingredient);
+		Category salt = new Category(getNextId(), "Salt", condiment);
+		Category fat = new Category(getNextId(), "Fat", ingredient);
+		Category butter = new Category(getNextId(), "Butter", fat);
 		categoryRepository.add(poultry);
 		categoryRepository.add(chicken);
 		categoryRepository.add(duck);
@@ -64,6 +64,17 @@ public class InMemoryCategoryRepository implements CategoryRepository {
 	
 	public synchronized int getNextId(){
 		return nextId++;
+	}
+
+	@Override
+	public Category addCategory(String s) {
+		Category c = getCategory(s);
+		if(c != null){
+			return c;
+		}
+		c = new Category(getNextId(), s);
+		categoryRepository.add(c);
+		return c;
 	}
 	
 

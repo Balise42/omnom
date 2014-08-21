@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geekuisine.omnom.domain.Ingredient;
+import org.geekuisine.omnom.repository.CategoryRepository;
 import org.geekuisine.omnom.repository.IngredientRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,15 +12,16 @@ import org.springframework.stereotype.Repository;
 public class InMemoryIngredientRepository implements IngredientRepository {
 	private List<Ingredient> repository;
 	private int nextIndex;
+	private CategoryRepository categoryRepository;
 	
 	public InMemoryIngredientRepository(){
-		super();
 		nextIndex = 0;
 		repository = new ArrayList<Ingredient>();
-	}
-	
-	public void init(){
+		categoryRepository = new InMemoryCategoryRepository();
 		nextIndex = 0;
+		addIngredient("chicken");
+		addIngredient("butter");
+		addIngredient("salt");
 		Ingredient chicken = new Ingredient(getNextIndex(), "chicken");
 		repository = new ArrayList<Ingredient>();
 		repository.add(chicken);
@@ -39,7 +41,7 @@ public class InMemoryIngredientRepository implements IngredientRepository {
 		if(i != null){
 			return i;
 		}
-		
+		categoryRepository.addCategory(name);
 		i = new Ingredient(getNextIndex(), name);
 		repository.add(i);
 		return i;

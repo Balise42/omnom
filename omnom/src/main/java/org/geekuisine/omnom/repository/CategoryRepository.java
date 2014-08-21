@@ -8,4 +8,5 @@ public interface CategoryRepository {
 	public List<Category> getAllCategories();
 	public List<Category> getChildrenCategories(Category c);
 	public Category getCategory(String s);
+	public Category addCategory(String s);
 }

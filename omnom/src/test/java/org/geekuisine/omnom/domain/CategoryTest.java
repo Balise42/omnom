@@ -9,18 +9,24 @@ public class CategoryTest {
 	
 	@Before
 	public void init(){
-		ingredient = new Category(0, "ingredient", -1);
-		fat = new Category(1, "fat", 0);
-		dairy = new Category(2, "dairy", 0);
-		butter = new Category(3, "butter", 1);
+		ingredient = new Category(0, "ingredient");
+		fat = new Category(1, "fat", ingredient);
+		dairy = new Category(2, "dairy", ingredient);
+		butter = new Category(3, "butter", fat);
 	}
 	
 	@Test
-	public void addCategory_should_add_parent_category(){
-		butter.addParent(2);
-		Assert.assertEquals(butter.getParentCategories().size(), 2);
+	public void addParent_should_add_parent_category(){
+		butter.addParent(dairy);
+		Assert.assertEquals(butter.getParentCategories().size(), 3);
 	}
 	
-	
+	@Test
+	public void addParent_should_add_all_parents(){
+		butter.addParent(dairy);
+		Category saltbutter = new Category(4, "salted butter");
+		saltbutter.addParent(butter);
+		Assert.assertEquals(saltbutter.getParentCategories().size(), 4);
+	}
 
 }
