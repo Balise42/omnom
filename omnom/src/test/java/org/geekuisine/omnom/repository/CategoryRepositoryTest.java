@@ -47,4 +47,5 @@ public class CategoryRepositoryTest {
 	public void getAllCategories_should_return_stuff(){
 		Assert.assertTrue(rep.getAllCategories().size()>0);
 	}
+	
 }

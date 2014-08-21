@@ -55,14 +55,14 @@ public class InMemoryCategoryRepository implements CategoryRepository {
 	public List<Category> getChildrenCategories(Category c){
 		List<Category> children = new ArrayList<Category>();
 		for(Category cat : categoryRepository){
-			if(cat.getTopCategoryId() == c.getCategoryId()){
+			if(cat.getParentCategories().contains(c.getCategoryId())){
 				children.add(cat);
 			}
 		}
 		return children;
 	}
 	
-	private synchronized int getNextId(){
+	public synchronized int getNextId(){
 		return nextId++;
 	}
 	

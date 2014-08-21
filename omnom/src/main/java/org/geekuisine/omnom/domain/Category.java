@@ -1,18 +1,22 @@
 package org.geekuisine.omnom.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Category {
 	int categoryId;
 	String name;
-	int topCategoryId;
+	List<Integer> parentCategories;
 	
 	public Category(){
-		super();
+		parentCategories = new ArrayList<Integer>();
 	}
 	
 	public Category(int categoryId, String name, int topCategoryId){
+		this();
 		this.categoryId = categoryId;
 		this.name = name;
-		this.topCategoryId = topCategoryId;
+		parentCategories.add(topCategoryId);
 	}
 
 	public int getCategoryId() {
@@ -31,12 +35,21 @@ public class Category {
 		this.name = name;
 	}
 
-	public int getTopCategoryId() {
-		return topCategoryId;
+	public List<Integer> getParentCategories() {
+		return parentCategories;
 	}
 
-	public void setTopCategoryId(int topCategoryId) {
-		this.topCategoryId = topCategoryId;
+	public void setTopCategoryId(List<Integer> parentCategories) {
+		this.parentCategories = parentCategories;
+	}
+	
+	public void addParent(int parent){
+		for(int cat : parentCategories){
+			if(cat == parent){
+				return;
+			}
+		}
+		parentCategories.add(parent);
 	}
 
 }
