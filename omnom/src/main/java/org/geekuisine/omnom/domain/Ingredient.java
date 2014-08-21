@@ -1,8 +1,5 @@
 package org.geekuisine.omnom.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Ingredient {
 	int ingredientId;
 	String name;
