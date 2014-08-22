@@ -7,4 +7,5 @@ import org.geekuisine.omnom.domain.Recipe;
 public interface RecipeRepository {
 	public List<Recipe> getAllRecipes();
 	public Recipe getRecipeById(int recipeId);
+	public void addRecipe(Recipe r);
 }

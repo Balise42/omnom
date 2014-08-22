@@ -22,4 +22,9 @@ public class RecipeServiceImpl implements RecipeService {
 	public List<Recipe> getAllRecipes() {
 		return recipeRepository.getAllRecipes();
 	} 
+	
+	@Override
+	public void addRecipe(Recipe recipe){
+		recipeRepository.addRecipe(recipe);
+	}
 }

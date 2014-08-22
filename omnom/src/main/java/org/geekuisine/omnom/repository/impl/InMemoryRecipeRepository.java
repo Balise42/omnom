@@ -71,4 +71,10 @@ public class InMemoryRecipeRepository implements RecipeRepository {
 		}
 		return null;
 	}
+	
+	@Override
+	public void addRecipe(Recipe recipe){
+		recipe.setRecipeId(getNextId());
+		recipeRepository.add(recipe);
+	}
 }
