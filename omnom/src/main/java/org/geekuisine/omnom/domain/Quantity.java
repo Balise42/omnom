@@ -7,6 +7,9 @@ public class Quantity {
 	BigDecimal numberOfUnits;
 	boolean fuzzy;
 	
+	public Quantity(){
+	}
+	
 	public Quantity(String unit, BigDecimal numberOfUnits, boolean fuzzy){
 		this.unit = unit;
 		this.numberOfUnits = numberOfUnits;
