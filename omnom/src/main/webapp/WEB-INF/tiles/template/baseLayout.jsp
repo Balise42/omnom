@@ -20,11 +20,11 @@ scale=1.0">
 </ul>
 <h3 class="text-muted">Omnom</h3>
 </div>
-<div class="jumbotron">
+<div class="starter-template">
 <h1>
 <tiles:insertAttribute name="heading" />
 </h1>
-<p>
+<p class="lead">
 <tiles:insertAttribute name="tagline" /></p>
 </div>
 <div class="row">
