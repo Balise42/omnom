@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software
+Foundation//DTD Tiles Configuration 3.0//EN"
+"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+<definition name="baseLayout" template="/WEB-INF/tiles/template/baseLayout.jsp">
+	<put-attribute name="title" value="Omnom" />
+	<put-attribute name="heading" value="" />
+	<put-attribute name="tagline" value="" />
+	<put-attribute name="navigation" value="/WEB-INF/tiles/template/navigation.jsp" />
+	<put-attribute name="content" value="" />
+	<put-attribute name="footer" value="/WEB-INF/tiles/template/footer.jsp" />
+</definition>
+
+<definition name="welcome" extends="baseLayout">
+	<put-attribute name="title" value="Omnom" />
+	<put-attribute name="heading" value="Omnom" />
+	<put-attribute name="tagline" value="All the recipes" />
+	<put-attribute name="content" value="/WEB-INF/jsp/recipes.jsp" />
+</definition>
+
+<definition name="recipes" extends="baseLayout">
+	<put-attribute name="title" value="Omnom" />
+	<put-attribute name="heading" value="Omnom" />
+	<put-attribute name="tagline" value="All the recipes" />
+	<put-attribute name="content" value="/WEB-INF/jsp/recipes.jsp" />
+</definition>
+
+<definition name="recipe" extends="baseLayout">
+	<put-attribute name="title" value="Omnom" />
+	<put-attribute name="heading" value="Omnom" />
+	<put-attribute name="tagline" value="See one recipe" />
+	<put-attribute name="content" value="/WEB-INF/jsp/recipe.jsp" />
+</definition>
+</tiles-definitions>
