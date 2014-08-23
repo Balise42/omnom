@@ -1,0 +1,58 @@
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE category(
+id integer primary key,
+name text
+);
+INSERT INTO "category" VALUES(0,'ingredient');
+INSERT INTO "category" VALUES(1,'condiment');
+INSERT INTO "category" VALUES(2,'salt');
+INSERT INTO "category" VALUES(3,'dairy');
+INSERT INTO "category" VALUES(4,'fat');
+INSERT INTO "category" VALUES(5,'meat');
+INSERT INTO "category" VALUES(6,'poultry');
+INSERT INTO "category" VALUES(7,'chicken');
+INSERT INTO "category" VALUES(8,'butter');
+CREATE TABLE ingredient(
+id integer primary key,
+name text
+);
+INSERT INTO "ingredient" VALUES(0,'chicken');
+INSERT INTO "ingredient" VALUES(1,'salt');
+INSERT INTO "ingredient" VALUES(2,'butter');
+CREATE TABLE parent(
+idCategory integer,
+idParent integer,
+primary key(idCategory, idParent)
+);
+INSERT INTO "parent" VALUES(1,0);
+INSERT INTO "parent" VALUES(2,0);
+INSERT INTO "parent" VALUES(2,1);
+INSERT INTO "parent" VALUES(3,0);
+INSERT INTO "parent" VALUES(4,0);
+INSERT INTO "parent" VALUES(5,0);
+INSERT INTO "parent" VALUES(6,0);
+INSERT INTO "parent" VALUES(6,5);
+INSERT INTO "parent" VALUES(7,0);
+INSERT INTO "parent" VALUES(7,5);
+INSERT INTO "parent" VALUES(7,6);
+INSERT INTO "parent" VALUES(8,0);
+INSERT INTO "parent" VALUES(8,3);
+INSERT INTO "parent" VALUES(8,4);
+CREATE TABLE recipe(
+id integer primary key,
+name text,
+numPersons integer,
+cookingTime integer,
+restingTime integer,
+prepTime integer,
+steps text
+);
+CREATE TABLE recipeIngredients(
+idRecipe integer,
+idIngredient integer,
+unit varchar(30),
+numberOfUnits real,
+fuzzy integer
+);
+COMMIT;
