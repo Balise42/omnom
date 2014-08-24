@@ -52,5 +52,9 @@ public class Category {
 			parentCategories.addAll(parent.getParentCategories());
 		}
 	}
+	
+	public void addParentWithoutGrandparents(int parent){
+		parentCategories.add(parent);
+	}
 
 }

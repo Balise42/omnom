@@ -7,7 +7,6 @@ import org.geekuisine.omnom.domain.Category;
 import org.geekuisine.omnom.repository.CategoryRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
 public class InMemoryCategoryRepository implements CategoryRepository {
 	List<Category> categoryRepository;
 	int nextId;

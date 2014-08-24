@@ -3,6 +3,7 @@ package org.geekuisine.omnom.repository;
 import java.util.List;
 
 import org.geekuisine.omnom.domain.Category;
+import org.geekuisine.omnom.repository.impl.DBCategoryRepository;
 import org.geekuisine.omnom.repository.impl.InMemoryCategoryRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,8 +14,8 @@ public class CategoryRepositoryTest {
 	Category poultry;
 	
 	@Before
-	public void init(){
-		rep = new InMemoryCategoryRepository();
+	public void init() throws ClassNotFoundException{
+		rep = new DBCategoryRepository();
 		poultry = rep.getCategory("poultry");
 	}
 	
@@ -37,7 +38,7 @@ public class CategoryRepositoryTest {
 	
 	@Test
 	public void getCategory_should_fail(){
-		Category c = rep.getCategory("BÉPOÈDLJAUIE,CTNSRTÀY.K'QGF");
+		Category c = rep.getCategory("BÉPOÈDLJAUIE,CTNSRTÀY.KQGF");
 		if(c != null){
 			Assert.fail();
 		}
@@ -46,6 +47,14 @@ public class CategoryRepositoryTest {
 	@Test
 	public void getAllCategories_should_return_stuff(){
 		Assert.assertTrue(rep.getAllCategories().size()>0);
+	}
+	
+	@Test
+	public void addCategory_should_work(){
+		Category c = rep.addCategory("olive oil");
+		if(c==null){
+			Assert.fail(); 
+		}
 	}
 	
 }
