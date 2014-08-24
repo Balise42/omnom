@@ -54,18 +54,24 @@
 				<div class="col-lg-10">
 					<form:input id="ingredientsList[0].name" path="ingredientsList[0].name"
 						type="text" class="form:input-large" />
+					<form:input id="quantities[0].numberOfUnits" path="quantities[0].numberOfUnits" type="text"
+						class="form:input-large" />
 					<form:input id="quantities[0].unit" path="quantities[0].unit" type="text"
 						class="form:input-large" />
 				</div>
 				<div class="col-lg-10">
 					<form:input id="ingredientsList[1].name" path="ingredientsList[1].name"
 						type="text" class="form:input-large" />
+					<form:input id="quantities[1].numberOfUnits" path="quantities[1].numberOfUnits" type="text"
+						class="form:input-large" />
 					<form:input id="quantities[1].unit" path="quantities[1].unit" type="text"
 						class="form:input-large" />
 				</div>
 				<div class="col-lg-10">
 					<form:input id="ingredientsList[2].name" path="ingredientsList[2].name"
 						type="text" class="form:input-large" />
+					<form:input id="quantities[2].numberOfUnits" path="quantities[2].numberOfUnits" type="text"
+						class="form:input-large" />
 					<form:input id="quantities[2].unit" path="quantities[2].unit" type="text"
 						class="form:input-large" />
 				</div>

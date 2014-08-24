@@ -40,4 +40,11 @@ Foundation//DTD Tiles Configuration 3.0//EN"
 	<put-attribute name="tagline" value="Add a recipe" />
 	<put-attribute name="content" value="/WEB-INF/jsp/addRecipe.jsp" />
 </definition>
+
+<definition name="ingredients" extends="baseLayout">
+	<put-attribute name="title" value="Omnom" />
+	<put-attribute name="heading" value="Omnom" />
+	<put-attribute name="tagline" value="All the ingredients" />
+	<put-attribute name="content" value="/WEB-INF/jsp/ingredients.jsp" />
+</definition>
 </tiles-definitions>

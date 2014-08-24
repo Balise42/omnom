@@ -1,0 +1,23 @@
+package org.geekuisine.omnom.service.impl;
+
+import java.util.List;
+
+import org.geekuisine.omnom.domain.Ingredient;
+import org.geekuisine.omnom.repository.IngredientRepository;
+import org.geekuisine.omnom.service.IngredientService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class IngredientServiceImpl implements IngredientService {
+	@Autowired
+	private IngredientRepository ingredientRepository;
+
+	public void addIngredient(String s){
+		ingredientRepository.addIngredient(s);
+	}
+	
+	public List<Ingredient> getAllIngredients(){
+		return ingredientRepository.getAllIngredients();
+	}
+}
