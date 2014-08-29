@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.geekuisine.omnom.domain.Category;
 import org.geekuisine.omnom.repository.impl.DBCategoryRepository;
+import org.geekuisine.omnom.repository.impl.DBRepositoryUtils;
 import org.geekuisine.omnom.repository.impl.InMemoryCategoryRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +16,11 @@ public class CategoryRepositoryTest {
 	
 	@Before
 	public void init() throws ClassNotFoundException{
+		System.setProperty("omnom.db.connectionString", "jdbc:sqlite:omnom-test.db");
 		rep = new DBCategoryRepository();
+		DBRepositoryUtils dbutils = new DBRepositoryUtils();
+		dbutils.truncateAll();
+		dbutils.populate();
 		poultry = rep.getCategory("poultry");
 	}
 	
