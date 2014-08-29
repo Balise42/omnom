@@ -3,6 +3,7 @@ package org.geekuisine.omnom.repository;
 import java.util.List;
 
 import org.geekuisine.omnom.domain.Category;
+import org.geekuisine.omnom.repository.exception.CategoryRepositoryException;
 import org.geekuisine.omnom.repository.impl.DBCategoryRepository;
 import org.geekuisine.omnom.repository.impl.DBRepositoryUtils;
 import org.geekuisine.omnom.repository.impl.InMemoryCategoryRepository;
@@ -42,8 +43,21 @@ public class CategoryRepositoryTest {
 	}
 	
 	@Test
+	public void getCategory_by_existing_id_should_succeed(){
+		Category c = rep.getCategory(0);
+		Assert.assertNotNull(c);
+		Assert.assertTrue(c.getName().equalsIgnoreCase("ingredient"));
+	}
+	
+	@Test
+	public void getCategory_by_nonexistent_id_should_fail(){
+		Category c = rep.getCategory(1024);
+		Assert.assertNull(c);
+	}
+	
+	@Test
 	public void getCategory_should_fail(){
-		Category c = rep.getCategory("BÉPOÈDLJAUIE,CTNSRTÀY.KQGF");
+		Category c = rep.getCategory("BÉPOÈDLJAUIE,CTNS'RTÀY.KQGF");
 		if(c != null){
 			Assert.fail();
 		}
@@ -56,10 +70,50 @@ public class CategoryRepositoryTest {
 	
 	@Test
 	public void addCategory_should_work(){
-		Category c = rep.addCategory("olive oil");
+		rep.addCategory("olive oil");
+		Category c = rep.getCategory("olive oil");
 		if(c==null){
 			Assert.fail(); 
 		}
+	}
+	
+	@Test
+	public void updateCategory_should_work(){
+		Category c = rep.getCategory("chicken");
+		c.addParentWithoutGrandparents(5);
+		rep.updateCategory(c);
+		Assert.assertTrue(rep.getCategory("chicken").getParentCategories().contains(5));
+	}
+	
+	@Test(expected=CategoryRepositoryException.class)
+	public void updateCategory_with_invalid_id_should_throw(){
+		Category c = new Category();
+		c.setCategoryId(1299);
+		c.setName("failCat");
+		rep.updateCategory(c);
+		Assert.fail();
+	}
+	
+	@Test(expected=CategoryRepositoryException.class)
+	public void updateCategory_with_invalid_parent_should_throw(){
+		Category c = rep.getCategory("chicken");
+		c.addParentWithoutGrandparents(90);
+		rep.updateCategory(c);
+		Assert.fail();
+	}
+	
+	@Test
+	public void deleteCategory_should_work(){
+		rep.deleteCategory(8);
+		Category c = rep.getCategory("butter");
+		Assert.assertNull(c);
+	}
+	
+	@Test
+	public void deleteCategory_should_delete_in_children(){
+		rep.deleteCategory(6);
+		Category c = rep.getCategory("chicken");
+		Assert.assertFalse(c.getParentCategories().contains(6));
 	}
 	
 }

@@ -69,11 +69,11 @@ public class DBRepositoryUtils {
 			s.executeUpdate("INSERT INTO parent VALUES(6,0)");
 			s.executeUpdate("INSERT INTO parent VALUES(6,5)");
 			s.executeUpdate("INSERT INTO parent VALUES(7,0)");
-			s.executeUpdate("INSERT INTO parent VALUES(7,5)");
 			s.executeUpdate("INSERT INTO parent VALUES(7,6)");
 			s.executeUpdate("INSERT INTO parent VALUES(8,0)");
 			s.executeUpdate("INSERT INTO parent VALUES(8,3)");
 			s.executeUpdate("INSERT INTO parent VALUES(8,4)");
+			s.executeUpdate("INSERT INTO parent VALUES(0,0)");
 			connection.close();
 		}
 		catch(SQLException ex){

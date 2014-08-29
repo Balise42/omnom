@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.geekuisine.omnom.domain.Category;
 import org.geekuisine.omnom.repository.CategoryRepository;
+import org.geekuisine.omnom.repository.exception.CategoryRepositoryException;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -150,6 +151,91 @@ public class DBCategoryRepository implements CategoryRepository {
 			System.exit(-1);
 		}
 		return nextId;
+	}
+
+	@Override
+	public Category getCategory(int i) {
+		try(Connection connection = DriverManager.getConnection(connectionString)){	
+			PreparedStatement statement = connection.prepareStatement("select id, name, idParent from category, parent where id = ? and category.id = parent.idCategory");
+			statement.setInt(1, i);
+
+			ResultSet rs = statement.executeQuery();
+			if (rs.next()) {
+				int id = rs.getInt("id");
+				String name = rs.getString("name");
+				Category c = new Category(id, name);
+				do {
+					int idParent = rs.getInt("idParent");
+					c.addParentWithoutGrandparents(idParent);
+				} while (rs.next());
+				connection.close();
+				return c;
+			} else {
+				connection.close();
+				return null;
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public void updateCategory(Category c) throws CategoryRepositoryException {
+		validate(c);
+		try(Connection connection = DriverManager.getConnection(connectionString)){
+			PreparedStatement statement = connection.prepareStatement("update category set name = ? where id = ? ");
+			statement.setString(1, c.getName());
+			statement.setInt(2, c.getCategoryId());
+			statement.executeUpdate();
+			statement = connection.prepareStatement("delete from parent where idCategory = ?");
+			statement.setInt(1, c.getCategoryId());
+			statement.executeUpdate();
+			for(int parent : c.getParentCategories()){
+				statement = connection.prepareStatement("insert into parent values (?,?)");
+				statement.setInt(1, c.getCategoryId());
+				statement.setInt(2, parent);
+				statement.executeUpdate();
+			}
+			connection.close();
+		}
+		catch(SQLException ex){
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+	}
+
+	@Override
+	public void deleteCategory(int i) {
+		try(Connection connection = DriverManager.getConnection(connectionString)){
+			PreparedStatement statement = connection.prepareStatement("delete from category where id = ?");
+			statement.setInt(1, i);
+			statement.executeUpdate();
+			statement = connection.prepareStatement("delete from parent where idParent = ? or idCategory = ?");
+			statement.setInt(1, i);
+			statement.setInt(2, i);
+			statement.executeUpdate();
+		}
+		catch(SQLException ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void validate(Category c) throws CategoryRepositoryException {
+		Category cat = getCategory(c.getCategoryId());
+		if(cat == null){
+			throw new CategoryRepositoryException("Could not find category with id"+c.getCategoryId());
+		}
+		for(int parent : c.getParentCategories()){
+			Category parentCategory = getCategory(parent);
+			if(parentCategory == null){
+				throw new CategoryRepositoryException("Could not find parent category with id"+parent);
+			}
+			if(parentCategory.getCategoryId() != 0 && !c.getParentCategories().containsAll(parentCategory.getParentCategories())){
+				throw new CategoryRepositoryException("Parent hierarchy is invalid.");
+			}
+		}
 	}
 
 }

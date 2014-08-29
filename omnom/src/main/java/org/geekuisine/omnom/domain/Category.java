@@ -46,6 +46,10 @@ public class Category {
 		return parentCategories;
 	}
 	
+	public void setParentCategories(Set<Integer> parents){
+		parentCategories = parents;
+	}
+	
 	public void addParent(Category parent){
 		parentCategories.add(parent.categoryId);
 		if(parent.categoryId != 0){

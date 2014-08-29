@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.geekuisine.omnom.domain.Category;
 import org.geekuisine.omnom.repository.CategoryRepository;
+import org.geekuisine.omnom.repository.exception.CategoryRepositoryException;
 import org.springframework.stereotype.Repository;
 
+//@Repository
 public class InMemoryCategoryRepository implements CategoryRepository {
 	List<Category> categoryRepository;
 	int nextId;
@@ -21,6 +23,7 @@ public class InMemoryCategoryRepository implements CategoryRepository {
 		Category chicken = new Category(getNextId(), "Chicken", poultry);
 		Category duck = new Category(getNextId(), "Duck", poultry);
 		Category chickenLeg = new Category(getNextId(), "Chicken leg", chicken);
+		Category meat = new Category(getNextId(), "Meat",ingredient);
 		Category condiment = new Category(getNextId(), "Condiment", ingredient);
 		Category salt = new Category(getNextId(), "Salt", condiment);
 		Category fat = new Category(getNextId(), "Fat", ingredient);
@@ -29,6 +32,7 @@ public class InMemoryCategoryRepository implements CategoryRepository {
 		categoryRepository.add(chicken);
 		categoryRepository.add(duck);
 		categoryRepository.add(chickenLeg);
+		categoryRepository.add(meat);
 		categoryRepository.add(condiment);
 		categoryRepository.add(salt);
 		categoryRepository.add(fat);
@@ -75,6 +79,51 @@ public class InMemoryCategoryRepository implements CategoryRepository {
 		categoryRepository.add(c);
 		return c;
 	}
-	
 
+	@Override
+	public Category getCategory(int i) {
+		for(Category cat : categoryRepository){
+			if(cat.getCategoryId() == i){
+				return cat;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public void updateCategory(Category c) throws CategoryRepositoryException {
+		validate(c);
+		for(int i = 0; i<categoryRepository.size(); i++){
+			if(categoryRepository.get(i).getCategoryId() == c.getCategoryId()){
+				categoryRepository.set(i,  c);
+				return;
+			}
+		}
+	}
+
+	@Override
+	public void deleteCategory(int index) {
+		for(int i = 0; i<categoryRepository.size(); i++){
+			if(categoryRepository.get(i).getCategoryId() == index){
+				categoryRepository.remove(i);
+				return;
+			}
+		}
+	}
+
+	@Override
+	public void validate(Category category) throws CategoryRepositoryException {
+		if(getCategory(category.getCategoryId()) == null){
+			throw new CategoryRepositoryException("Could not find category with id"+category.getCategoryId());
+		}
+		for(int parent : category.getParentCategories()){
+			Category parentCategory = getCategory(parent);
+			if(parentCategory == null){
+				throw new CategoryRepositoryException("Could not find parent category with id"+parent);
+			}
+			if(parentCategory.getCategoryId() != 0 && !category.getParentCategories().containsAll(parentCategory.getParentCategories())){
+				throw new CategoryRepositoryException("Parent hierarchy is invalid.");
+			}
+		}
+	}
 }
