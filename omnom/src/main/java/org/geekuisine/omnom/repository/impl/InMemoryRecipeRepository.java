@@ -15,16 +15,20 @@ import org.joda.time.Duration;
 import org.springframework.stereotype.Repository;
 
 @Repository
+/** First implementation of recipe repository - in memory.
+ * Not for production use, only for dev purpose.
+ * Should probably be implemented as singleton if it were to be of any real use. */
 public class InMemoryRecipeRepository implements RecipeRepository {
+	/** List of recipes, actually making the repository */
 	List<Recipe> recipeRepository;
+	/** ID of the next recipe added to the repository */
 	int nextId;
 	
-	IngredientRepository ingredientRepository;
-	
+	/** Creates */
 	public InMemoryRecipeRepository(){
 		recipeRepository = new ArrayList<Recipe>();
 		nextId = 0;
-		ingredientRepository = new InMemoryIngredientRepository();
+		IngredientRepository ingredientRepository = new InMemoryIngredientRepository();
 		nextId = 0;
 		recipeRepository = new ArrayList<Recipe>();
 		Recipe recipe = new Recipe();

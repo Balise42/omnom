@@ -11,16 +11,19 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert;
 
+/** Testing CategoryRepository objects. Does NOT autowire the object under test, it has
+ * to be created explicitely. */
 public class CategoryRepositoryTest {
 	CategoryRepository rep;
 	Category poultry;
 	
 	@Before
+	/** Creates a test CategoryRepository and populates it. */
 	public void init() throws ClassNotFoundException{
 		System.setProperty("omnom.db.connectionString", "jdbc:sqlite:omnom-test.db");
 		rep = new DBCategoryRepository();
 		DBRepositoryUtils dbutils = new DBRepositoryUtils();
-		dbutils.truncateAll();
+		dbutils.dropAllTables();
 		dbutils.populate();
 		poultry = rep.getCategory("poultry");
 	}

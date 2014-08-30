@@ -2,9 +2,13 @@ package org.geekuisine.omnom.domain;
 
 import java.math.BigDecimal;
 
+/** Represent a quantity for ingredients */
 public class Quantity {
+	/** The unit (e.g. grams, dash, cups...) */
 	String unit;
+	/** The quantity, expressed in "unit"s */
 	BigDecimal numberOfUnits;
+	/** Whether the quantity needs to be scaled with the recipe (false) or not (true) */
 	boolean fuzzy;
 	
 	public Quantity(){

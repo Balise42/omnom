@@ -9,10 +9,16 @@ import org.geekuisine.omnom.repository.exception.CategoryRepositoryException;
 import org.springframework.stereotype.Repository;
 
 //@Repository
+/** First implementation of the category repository - stays in memory, no persistent storage.
+ * Not for production use, only for dev purpose.
+ * Should probably be implemented as singleton if it were to be used in any useful way. */
 public class InMemoryCategoryRepository implements CategoryRepository {
+	/** List of categories */
 	List<Category> categoryRepository;
+	/** ID of the next category when added to the repository */
 	int nextId;
 
+	/** Default constructor: creates the repository and adds some data to it */
 	public InMemoryCategoryRepository(){
 		nextId = 0;
 		categoryRepository = new ArrayList<Category>();
@@ -40,6 +46,7 @@ public class InMemoryCategoryRepository implements CategoryRepository {
 		
 	}
 	
+	@Override
 	public Category getCategory(String s){
 		for(Category cat : categoryRepository){
 			if(cat.getName().equalsIgnoreCase(s)){

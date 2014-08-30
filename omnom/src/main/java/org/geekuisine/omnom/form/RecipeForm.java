@@ -12,6 +12,7 @@ import org.geekuisine.omnom.domain.Quantity;
 import org.geekuisine.omnom.domain.Recipe;
 import org.joda.time.Duration;
 
+/** Recipe bean usable in a JSP form */
 public class RecipeForm {
 	private String name;
 	private List<Ingredient> ingredientsList;
@@ -22,6 +23,8 @@ public class RecipeForm {
 	private int restTime;
 	private String steps;
 	
+	/** Default constructor. IngredientList and quantities are declared as LazyList to allow dynamic forms
+	 * where the exact number of fields is unknown. */
 	public RecipeForm(){
 		Factory ingredientFactory = new Factory() {
 			public Object create() {
@@ -87,6 +90,7 @@ public class RecipeForm {
 		this.steps = steps;
 	}
 	
+	/** Creates a Recipe object from the form data */
 	public Recipe getRecipe(){
 		Recipe recipe = new Recipe();
 		recipe.setName(name);

@@ -6,15 +6,18 @@ import org.geekuisine.omnom.repository.impl.DBRepositoryUtils;
 import org.geekuisine.omnom.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/** Implementation of the CategoryService interface */
 public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired
+	/** Uses the current CategoryRepository */
 	CategoryRepository repository;
 	
 	@Override
 	public Category create(Category category) {
 		Category newCategory = repository.addCategory(category.getName());
 		newCategory.setParentCategories(category.getParentCategories());
+		newCategory.addParentWithoutGrandparents(0);
 		update(newCategory);
 		return read(category.getName());
 	}
@@ -39,9 +42,10 @@ public class CategoryServiceImpl implements CategoryService {
 		repository.deleteCategory(id);
 	}
 	
+	@Override
 	public void initRepository(){
 		DBRepositoryUtils dbutils = new DBRepositoryUtils();
-		dbutils.truncateAll();
+		dbutils.dropAllTables();
 		dbutils.populate();
 	}
 

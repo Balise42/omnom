@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+/** Testing non-trivial behaviours of Category */
 public class CategoryTest {
 	Category ingredient, fat, dairy, butter;
 	

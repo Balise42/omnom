@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+/** Implementation of the IngredientService interface */
 public class IngredientServiceImpl implements IngredientService {
 	@Autowired
+	/** Uses the current IngredientRepository */ 
 	private IngredientRepository ingredientRepository;
 
 	public void addIngredient(String s){

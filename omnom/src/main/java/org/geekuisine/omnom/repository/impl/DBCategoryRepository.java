@@ -15,9 +15,12 @@ import org.geekuisine.omnom.repository.exception.CategoryRepositoryException;
 import org.springframework.stereotype.Repository;
 
 @Repository
+/** DB (sqlite) implementation of the Category repository */
 public class DBCategoryRepository implements CategoryRepository {
+	/** Connection string to the DB */
 	private String connectionString;
 
+	/** Default constructor - just inits the JDBC driver */
 	public DBCategoryRepository() throws ClassNotFoundException {
 		Class.forName("org.sqlite.JDBC");
 		connectionString = System.getProperty("omnom.db.connectionString");
@@ -135,6 +138,9 @@ public class DBCategoryRepository implements CategoryRepository {
 		}
 	}
 
+	/** Gets the ID of the last category that has been added to the DB, returns the ID
+	 * of the next category to be inserted in the DB. 
+	 * TODO fix race condition as said ID is not reserved... */
 	private synchronized int getNextIdAndIncrement() {
 		int nextId = 0;
 		try (Connection connection = DriverManager.getConnection(connectionString);){

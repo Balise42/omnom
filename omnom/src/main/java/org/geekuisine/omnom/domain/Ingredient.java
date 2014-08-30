@@ -1,7 +1,10 @@
 package org.geekuisine.omnom.domain;
 
+/** Represents an ingredient. A category with the name of the ingredient should also exist. */
 public class Ingredient {
+	/** ID of the ingredient. Typically attributed by the repository. */
 	int ingredientId;
+	/** Name of the ingredient */
 	String name;
 	
 	public Ingredient(){
@@ -28,6 +31,7 @@ public class Ingredient {
 		this.name = name;
 	}
 	
+	/** Case insensitive comparison on the ingredient name */
 	public boolean isIngredient(String s){
 		if(name.equalsIgnoreCase(s)){
 			return true;

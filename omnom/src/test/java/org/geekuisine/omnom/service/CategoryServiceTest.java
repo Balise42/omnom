@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/test-DispatcherServlet-context.xml")
 @WebAppConfiguration
+/** Integration testing for CategoryService (everything is autowired) */
 public class CategoryServiceTest {
 	
 	@Autowired
@@ -24,9 +25,10 @@ public class CategoryServiceTest {
 	}
 	
 	@Before
+	/** Creates a new test repository and populates it*/
 	public void init(){
 		DBRepositoryUtils dbutils = new DBRepositoryUtils();
-		dbutils.truncateAll();
+		dbutils.dropAllTables();
 		dbutils.populate();
 	}
 	

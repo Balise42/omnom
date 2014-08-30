@@ -13,30 +13,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
+/** Recipe controller */
 public class RecipeController {
 	@Autowired
 	RecipeService recipeService;
-	@Autowired
-	CategoryRepository categoryRepository;
+	
 	@RequestMapping("/recipes")
+	/** List all recipes */
 	public String getAllRecipes(Model model){
 		model.addAttribute("recipes", recipeService.getAllRecipes());
 		return "recipes";
 	}
 	
 	@RequestMapping("/recipe/{id}")
+	/** Displays a recipe by its ID */
 	public String getRecipeById(Model model, @PathVariable("id") int id){
 		model.addAttribute("recipe", recipeService.getRecipeById(id));
 		return "recipe";
 	}
 	
 	@RequestMapping(value="/recipes/add", method = RequestMethod.GET)
+	/** Displays the form to add a recipe */
 	public String addRecipe(Model model){
 		model.addAttribute("newRecipe", new RecipeForm());
 		return "addRecipe";
 	}
 	
 	@RequestMapping(value="/recipes/add", method = RequestMethod.POST)
+	/** Processes the form to add a recipe */
 	public String processRecipe(Model model, @ModelAttribute("newRecipe") RecipeForm recipeForm){
 		Recipe r = recipeForm.getRecipe();
 		recipeService.addRecipe(r);

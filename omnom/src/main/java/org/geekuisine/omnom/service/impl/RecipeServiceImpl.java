@@ -10,10 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+/** Implementation of the IngredientService interface */
 public class RecipeServiceImpl implements RecipeService {
 	@Autowired
+	/** Uses the current RecipeRepository */
 	private RecipeRepository recipeRepository;
 	@Autowired
+	/** Uses the current IngredientService */
 	private IngredientService ingredientService;
 
 	@Override

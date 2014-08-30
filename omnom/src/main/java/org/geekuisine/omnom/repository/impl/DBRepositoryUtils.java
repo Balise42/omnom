@@ -5,9 +5,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/** Utils to empty and re-populate the DB repositories. 
+ * Should not be used during normal operations. */
 public class DBRepositoryUtils {
 	private String connectionString;
 	
+	/** Sets the connection string for the database that is currently set up */
 	public DBRepositoryUtils(){
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -18,7 +21,8 @@ public class DBRepositoryUtils {
 		connectionString = System.getProperty("omnom.db.connectionString");
 	}
 	
-	public void truncateAll(){
+	/** Drops all the tables */
+	public void dropAllTables(){
 		try{
 			Connection connection = DriverManager.getConnection(connectionString);
 			Statement s = connection.createStatement();
@@ -35,6 +39,7 @@ public class DBRepositoryUtils {
 		}
 	}
 	
+	/** Creates the DB structure and populates it with a few base elements */
 	public void populate(){
 		try{
 			Connection connection = DriverManager.getConnection(connectionString);

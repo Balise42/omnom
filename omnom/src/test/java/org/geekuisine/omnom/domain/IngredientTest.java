@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.Before;
 import org.junit.Assert;
 
+/** Testing non-trivial behaviours of Ingredient */
 public class IngredientTest {
 	Ingredient ingredient;
 	

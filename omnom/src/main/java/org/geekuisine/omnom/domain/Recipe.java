@@ -7,14 +7,23 @@ import java.util.Map;
 
 import org.joda.time.Duration;
 
+/** Represent a recipe: metadata, steps and ingredients */
 public class Recipe {
+	/** ID of the recipe. Typically attributed by the repository.*/
 	int recipeId;
+	/** Name of the recipe */
 	String name;
+	/** Ingredients of the recipe: each Ingredient is associated to a Quantity for the recipe (total quantity used) */
 	Map<Ingredient, Quantity> ingredients;
+	/** Number of persons for which the recipe is written */
 	int numPersons;
+	/** Cooking time */
 	Duration cookingTime;
+	/** Preparation time */
 	Duration prepTime;
+	/** Resting time (also include refrigerating, rising, and such) */
 	Duration restTime;
+	/** Steps of the recipe (one string in the list = one step in the recipe) */
 	List<String> steps;
 	
 	public Recipe(){

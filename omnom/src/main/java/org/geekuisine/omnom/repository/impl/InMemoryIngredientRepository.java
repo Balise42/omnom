@@ -9,11 +9,20 @@ import org.geekuisine.omnom.repository.IngredientRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
+/** First implementation of the ingredient repository - stays in memory, no persistent storage.
+ * Not for production use, only for dev purpose.
+ * Should probably be implemented as singleton if were to be of any real use.
+ *  */
 public class InMemoryIngredientRepository implements IngredientRepository {
+	
+	/** List of ingredients that actually make the repository */
 	private List<Ingredient> repository;
+	/** Index of the next ingredient being added in the repository */
 	private int nextIndex;
+	/** Category repository used when adding a recipe (doubtful if this should be here or at a higher level...)*/
 	private CategoryRepository categoryRepository;
 	
+	/** Default constructor: creates the repository and adds a few ingredients to it */
 	public InMemoryIngredientRepository(){
 		nextIndex = 0;
 		repository = new ArrayList<Ingredient>();
@@ -31,10 +40,12 @@ public class InMemoryIngredientRepository implements IngredientRepository {
 		repository.add(salt);
 	}
 	
+	@Override
 	public List<Ingredient> getAllIngredients(){
 		return repository;
 	}
 	
+	@Override
 	public Ingredient addIngredient(String name){
 		
 		Ingredient i = getIngredient(name);
@@ -47,6 +58,7 @@ public class InMemoryIngredientRepository implements IngredientRepository {
 		return i;
 	}
 	
+	@Override
 	public Ingredient getIngredient(String name){
 		for(Ingredient ing : repository){
 			if(ing.isIngredient(name)){

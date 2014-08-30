@@ -6,13 +6,13 @@ import org.junit.Assert;
 import org.geekuisine.omnom.domain.Ingredient;
 import org.geekuisine.omnom.repository.impl.InMemoryIngredientRepository;
 
-/* @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/test-DispatcherServlet-context.xml")
-@WebAppConfiguration */
+/** Testing IngredientRepository objects. Does NOT autowire the object under test, it has
+ * to be created explicitely. */
 public class IngredientRepositoryTest {
 	IngredientRepository rep;
 	
 	@Before
+	/** Creates the repository and populates it*/
 	public void init(){
 		rep = new InMemoryIngredientRepository();
 	}

@@ -5,10 +5,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+/** Testing RecipeRepository objects. Does NOT autowire the object under test, it has
+ * to be created explicitely. */
 public class RecipeRepositoryTest {
 	RecipeRepository recipeRepository;
 	
 	@Before
+	/** Creates the RecipeRepository and populates it. */
 	public void init(){
 		recipeRepository = new InMemoryRecipeRepository();
 	}
