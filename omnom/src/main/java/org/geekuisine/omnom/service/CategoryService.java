@@ -8,4 +8,5 @@ public interface CategoryService {
 	public Category read(String name);
 	public void update(Category category);
 	public void delete(int id);
+	public void initRepository();
 }

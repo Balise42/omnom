@@ -2,6 +2,7 @@ package org.geekuisine.omnom.service.impl;
 
 import org.geekuisine.omnom.domain.Category;
 import org.geekuisine.omnom.repository.CategoryRepository;
+import org.geekuisine.omnom.repository.impl.DBRepositoryUtils;
 import org.geekuisine.omnom.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,14 +31,18 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public void update(Category category) {
-		// TODO Auto-generated method stub
-		
+		repository.updateCategory(category);
 	}
 
 	@Override
 	public void delete(int id) {
 		repository.deleteCategory(id);
-		
+	}
+	
+	public void initRepository(){
+		DBRepositoryUtils dbutils = new DBRepositoryUtils();
+		dbutils.truncateAll();
+		dbutils.populate();
 	}
 
 }
