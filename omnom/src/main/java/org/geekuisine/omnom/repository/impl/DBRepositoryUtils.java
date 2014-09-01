@@ -73,6 +73,12 @@ public class DBRepositoryUtils {
 			s.executeUpdate("INSERT INTO parent VALUES(8,3)");
 			s.executeUpdate("INSERT INTO parent VALUES(8,4)");
 			s.executeUpdate("INSERT INTO parent VALUES(0,0)");
+			
+			s.executeUpdate("INSERT INTO recipe VALUES(0, 'Oven roasted chicken', 4, 60, 0, 10, 'Put some butter and salt on the chicken.\nPut it in the oven at 240°C.\nCarve and eat.')");
+			s.executeUpdate("INSERT INTO recipeIngredients VALUES(0, 2, 'large pinch', 1, 1)");
+			s.executeUpdate("INSERT INTO recipeIngredients VALUES(0, 7, 'chicken', 1, 0)");
+			s.executeUpdate("INSERT INTO recipeIngredients VALUES(0, 8, 'tbsp', 1, 0)");
+			
 			connection.close();
 		}
 		catch(SQLException ex){

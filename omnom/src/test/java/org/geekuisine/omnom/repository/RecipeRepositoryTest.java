@@ -1,5 +1,8 @@
 package org.geekuisine.omnom.repository;
 
+import org.geekuisine.omnom.repository.impl.DBIngredientRepository;
+import org.geekuisine.omnom.repository.impl.DBRecipeRepository;
+import org.geekuisine.omnom.repository.impl.DBRepositoryUtils;
 import org.geekuisine.omnom.repository.impl.InMemoryRecipeRepository;
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,8 +15,12 @@ public class RecipeRepositoryTest {
 	
 	@Before
 	/** Creates the RecipeRepository and populates it. */
-	public void init(){
-		recipeRepository = new InMemoryRecipeRepository();
+	public void init() throws ClassNotFoundException{
+		System.setProperty("omnom.db.connectionString", "jdbc:sqlite:omnom-test.db");
+		DBRepositoryUtils dbutils = new DBRepositoryUtils();
+		dbutils.dropAllTables();
+		dbutils.populate();
+		recipeRepository = new DBRecipeRepository();
 	}
 	
 	@Test

@@ -109,12 +109,17 @@ public class Recipe {
 	
 	/** Sets the prep time to the duration in minutes */
 	public void setPrepTime(int minutes){
-		setRestTime(Duration.standardMinutes(minutes));
+		setPrepTime(Duration.standardMinutes(minutes));
 	}
 	
 	/** Splits the string according to newlines, sets the step string 
 	 * as split string. */
 	public void setSteps(String steps){
 		setSteps(Arrays.asList(steps.split("\n")));
+	}
+	
+	/** Add an ingredient to the ingredient list */
+	public void addIngredient(Ingredient i, Quantity q){
+		ingredients.put(i, q);
 	}
 }

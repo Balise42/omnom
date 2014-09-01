@@ -14,7 +14,6 @@ import org.geekuisine.omnom.repository.RecipeRepository;
 import org.joda.time.Duration;
 import org.springframework.stereotype.Repository;
 
-@Repository
 /** First implementation of recipe repository - in memory.
  * Not for production use, only for dev purpose.
  * Should probably be implemented as singleton if it were to be of any real use. */

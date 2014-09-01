@@ -10,7 +10,7 @@ public interface RecipeRepository {
 	public List<Recipe> getAllRecipes();
 	/** Gets a recipe by its ID */
 	public Recipe getRecipeById(int recipeId);
-	/** Adds a recipe to the repository. Ingredients and their corresponding 
-	 * categories should already exist when adding the recipe. */
+	/** Adds a recipe to the repository. Ingredients 
+	 * should already exist when adding the recipe. */
 	public void addRecipe(Recipe r);
 }
