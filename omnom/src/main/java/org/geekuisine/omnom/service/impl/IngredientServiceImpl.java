@@ -7,7 +7,9 @@ import org.geekuisine.omnom.repository.IngredientRepository;
 import org.geekuisine.omnom.repository.impl.DBRepositoryUtils;
 import org.geekuisine.omnom.service.IngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 /** Implementation of the CategoryService interface */
 public class IngredientServiceImpl implements IngredientService {
 

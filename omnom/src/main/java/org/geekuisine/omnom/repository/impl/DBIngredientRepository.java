@@ -24,6 +24,9 @@ public class DBIngredientRepository implements IngredientRepository {
 	public DBIngredientRepository() throws ClassNotFoundException {
 		Class.forName("org.sqlite.JDBC");
 		connectionString = System.getProperty("omnom.db.connectionString");
+		if(connectionString == null){
+			connectionString="jdbc:sqlite:omnom.db";
+		}
 	}
 
 	@Override
