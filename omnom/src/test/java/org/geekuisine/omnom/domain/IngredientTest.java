@@ -1,25 +1,33 @@
 package org.geekuisine.omnom.domain;
 
-import org.junit.Test;
-import org.junit.Before;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-/** Testing non-trivial behaviours of Ingredient */
+/** Testing non-trivial behaviours of Category */
 public class IngredientTest {
-	Ingredient ingredient;
+	Ingredient ingredient, fat, dairy, butter;
 	
 	@Before
 	public void init(){
-		ingredient = new Ingredient(0, "abCD");
+		ingredient = new Ingredient(0, "ingredient");
+		fat = new Ingredient(1, "fat", ingredient);
+		dairy = new Ingredient(2, "dairy", ingredient);
+		butter = new Ingredient(3, "butter", fat);
 	}
 	
 	@Test
-	public void isIngredient_should_say_ingredient_is_ABcd(){
-		Assert.assertTrue(ingredient.isIngredient("ABcd"));
+	public void addParent_should_add_parent_category(){
+		butter.addParent(dairy);
+		Assert.assertEquals(butter.getParentIngredients().size(), 3);
 	}
 	
 	@Test
-	public void isIngredient_should_say_ingredient_is_not_BEPO(){
-		Assert.assertFalse(ingredient.isIngredient("BEPO"));
+	public void addParent_should_add_all_parents(){
+		butter.addParent(dairy);
+		Ingredient saltbutter = new Ingredient(4, "salted butter");
+		saltbutter.addParent(butter);
+		Assert.assertEquals(saltbutter.getParentIngredients().size(), 4);
 	}
+
 }

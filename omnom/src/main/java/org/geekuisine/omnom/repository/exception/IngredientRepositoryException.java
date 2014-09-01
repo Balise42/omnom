@@ -1,13 +1,13 @@
 package org.geekuisine.omnom.repository.exception;
 
 /** Exception in the category repository */
-public class CategoryRepositoryException extends RuntimeException {
+public class IngredientRepositoryException extends RuntimeException {
 	
-	public CategoryRepositoryException(String string) {
+	public IngredientRepositoryException(String string) {
 		super(string);
 	}
 		
-	public CategoryRepositoryException(Throwable ex) {
+	public IngredientRepositoryException(Throwable ex) {
 		super(ex);
 	}
 

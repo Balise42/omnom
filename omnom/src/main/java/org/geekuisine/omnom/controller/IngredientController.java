@@ -15,7 +15,7 @@ public class IngredientController {
 	@RequestMapping("/ingredient/all")
 	/** List of all ingredients */
 	public String listAllIngredients(Model m){
-		m.addAttribute("ingredients", ingredientService.getAllIngredients());
+		m.addAttribute("ingredients", ingredientService.list());
 		return("ingredients");
 	}
 }

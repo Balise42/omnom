@@ -9,44 +9,44 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geekuisine.omnom.domain.Category;
-import org.geekuisine.omnom.repository.CategoryRepository;
-import org.geekuisine.omnom.repository.exception.CategoryRepositoryException;
+import org.geekuisine.omnom.domain.Ingredient;
+import org.geekuisine.omnom.repository.IngredientRepository;
+import org.geekuisine.omnom.repository.exception.IngredientRepositoryException;
 import org.springframework.stereotype.Repository;
 
 @Repository
 /** DB (sqlite) implementation of the Category repository */
-public class DBCategoryRepository implements CategoryRepository {
+public class DBIngredientRepository implements IngredientRepository {
 	/** Connection string to the DB */
 	private String connectionString;
 
 	/** Default constructor - just inits the JDBC driver */
-	public DBCategoryRepository() throws ClassNotFoundException {
+	public DBIngredientRepository() throws ClassNotFoundException {
 		Class.forName("org.sqlite.JDBC");
 		connectionString = System.getProperty("omnom.db.connectionString");
 	}
 
 	@Override
-	public List<Category> getAllCategories() {
+	public List<Ingredient> getAllIngredients() {
 		try (Connection connection = DriverManager.getConnection(connectionString)) {
-			List<Category> categories = new ArrayList<Category>();
+			List<Ingredient> categories = new ArrayList<Ingredient>();
 			Statement statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("select id, name, idParent from category, parent where category.id = parent.idCategory");
+			ResultSet rs = statement.executeQuery("select id, name, parentId from ingredient, parent where ingredient.id = parent.ingredientId");
 			while (rs.next()) {
 				int id = rs.getInt("id");
 				String name = rs.getString("name");
-				int parent = rs.getInt("idParent");
+				int parent = rs.getInt("parentId");
 				boolean createNew = true;
 				for (int i = 0; i < categories.size(); i++) {
-					if (categories.get(i).getCategoryId() == id) {
-						Category category = categories.get(i);
+					if (categories.get(i).getIngredientId() == id) {
+						Ingredient category = categories.get(i);
 						category.addParentWithoutGrandparents(parent);
 						categories.set(i, category);
 						createNew = false;
 					}
 				}
 				if (createNew) {
-					Category category = new Category(id, name);
+					Ingredient category = new Ingredient(id, name);
 					category.addParentWithoutGrandparents(parent);
 					categories.add(category);
 				}
@@ -60,21 +60,21 @@ public class DBCategoryRepository implements CategoryRepository {
 	}
 
 	@Override
-	public List<Category> getChildrenCategories(Category c) {
+	public List<Ingredient> getChildrenIngredients(Ingredient c) {
 		try (Connection connection = DriverManager.getConnection(connectionString)) {
-			List<Category> children = new ArrayList<Category>();
-			PreparedStatement statement = connection.prepareStatement("select id,name from category, parent where category.id = parent.idCategory and parent.idParent= ?");
-			statement.setInt(1, c.getCategoryId());
+			List<Ingredient> children = new ArrayList<Ingredient>();
+			PreparedStatement statement = connection.prepareStatement("select id,name from ingredient, parent where ingredient.id = parent.ingredientId and parent.parentId= ?");
+			statement.setInt(1, c.getIngredientId());
 			ResultSet rs = statement.executeQuery();
 			while (rs.next()) {
 				int id = rs.getInt("id");
 				String name = rs.getString("name");
-				Category child = new Category(id, name);
-				PreparedStatement statement2 = connection.prepareStatement("select idParent from parent where idCategory= ?");
+				Ingredient child = new Ingredient(id, name);
+				PreparedStatement statement2 = connection.prepareStatement("select parentId from parent where ingredientId = ?");
 				statement2.setInt(1, id);
 				ResultSet rs2 = statement2.executeQuery();
 				while (rs2.next()) {
-					int idParent = rs2.getInt("idParent");
+					int idParent = rs2.getInt("parentId");
 					child.addParentWithoutGrandparents(idParent);
 				}
 				children.add(child);
@@ -88,18 +88,18 @@ public class DBCategoryRepository implements CategoryRepository {
 	}
 
 	@Override
-	public Category getCategory(String s) {
+	public Ingredient getIngredient(String s) {
 		try (Connection connection = DriverManager.getConnection(connectionString)) {
-			PreparedStatement statement = connection.prepareStatement("select id, name, idParent from category, parent where name = ? and category.id = parent.idCategory");
+			PreparedStatement statement = connection.prepareStatement("select id, name, parentId from ingredient, parent where name = ? and ingredient.id = parent.ingredientId");
 			statement.setString(1, s);
 
 			ResultSet rs = statement.executeQuery();
 			if (rs.next()) {
 				int id = rs.getInt("id");
 				String name = rs.getString("name");
-				Category c = new Category(id, name);
+				Ingredient c = new Ingredient(id, name);
 				do {
-					int idParent = rs.getInt("idParent");
+					int idParent = rs.getInt("parentId");
 					c.addParentWithoutGrandparents(idParent);
 				} while (rs.next());
 				connection.close();
@@ -115,14 +115,14 @@ public class DBCategoryRepository implements CategoryRepository {
 	}
 
 	@Override
-	public Category addCategory(String s) {
-		Category c = getCategory(s);
+	public Ingredient addIngredient(String s) {
+		Ingredient c = getIngredient(s);
 		if (c != null) {
 			return c;
 		} else {
 			try (Connection connection = DriverManager.getConnection(connectionString);) {
 				int idNewCategory = getNextIdAndIncrement();
-				PreparedStatement statement = connection.prepareStatement("insert into category values (?, ?)");
+				PreparedStatement statement = connection.prepareStatement("insert into ingredient values (?, ?)");
 				statement.setInt(1, idNewCategory);
 				statement.setString(2, s);
 				statement.executeUpdate();
@@ -130,7 +130,7 @@ public class DBCategoryRepository implements CategoryRepository {
 				statement.setInt(1, idNewCategory);
 				statement.execute();
 				connection.close();
-				return getCategory(s);
+				return getIngredient(s);
 			} catch (SQLException ex) {
 				ex.printStackTrace();
 				return null;
@@ -145,9 +145,9 @@ public class DBCategoryRepository implements CategoryRepository {
 		int nextId = 0;
 		try (Connection connection = DriverManager.getConnection(connectionString);){
 			Statement statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("select max(id) as maxCat from category");
+			ResultSet rs = statement.executeQuery("select max(id) as maxIng from ingredient");
 			if (rs.next()) {
-				nextId = rs.getInt("maxCat") + 1;
+				nextId = rs.getInt("maxIng") + 1;
 			} else {
 				throw (new SQLException("Couldn't get next id"));
 			}
@@ -160,18 +160,18 @@ public class DBCategoryRepository implements CategoryRepository {
 	}
 
 	@Override
-	public Category getCategory(int i) {
+	public Ingredient getIngredient(int i) {
 		try(Connection connection = DriverManager.getConnection(connectionString)){	
-			PreparedStatement statement = connection.prepareStatement("select id, name, idParent from category, parent where id = ? and category.id = parent.idCategory");
+			PreparedStatement statement = connection.prepareStatement("select id, name, parentId from ingredient, parent where id = ? and ingredient.id = parent.ingredientId");
 			statement.setInt(1, i);
 
 			ResultSet rs = statement.executeQuery();
 			if (rs.next()) {
 				int id = rs.getInt("id");
 				String name = rs.getString("name");
-				Category c = new Category(id, name);
+				Ingredient c = new Ingredient(id, name);
 				do {
-					int idParent = rs.getInt("idParent");
+					int idParent = rs.getInt("parentId");
 					c.addParentWithoutGrandparents(idParent);
 				} while (rs.next());
 				connection.close();
@@ -187,19 +187,19 @@ public class DBCategoryRepository implements CategoryRepository {
 	}
 
 	@Override
-	public void updateCategory(Category c) throws CategoryRepositoryException {
+	public void updateIngredient(Ingredient c) throws IngredientRepositoryException {
 		validate(c);
 		try(Connection connection = DriverManager.getConnection(connectionString)){
-			PreparedStatement statement = connection.prepareStatement("update category set name = ? where id = ? ");
+			PreparedStatement statement = connection.prepareStatement("update ingredient set name = ? where id = ? ");
 			statement.setString(1, c.getName());
-			statement.setInt(2, c.getCategoryId());
+			statement.setInt(2, c.getIngredientId());
 			statement.executeUpdate();
-			statement = connection.prepareStatement("delete from parent where idCategory = ?");
-			statement.setInt(1, c.getCategoryId());
+			statement = connection.prepareStatement("delete from parent where ingredientId = ?");
+			statement.setInt(1, c.getIngredientId());
 			statement.executeUpdate();
-			for(int parent : c.getParentCategories()){
+			for(int parent : c.getParentIngredients()){
 				statement = connection.prepareStatement("insert into parent values (?,?)");
-				statement.setInt(1, c.getCategoryId());
+				statement.setInt(1, c.getIngredientId());
 				statement.setInt(2, parent);
 				statement.executeUpdate();
 			}
@@ -212,12 +212,12 @@ public class DBCategoryRepository implements CategoryRepository {
 	}
 
 	@Override
-	public void deleteCategory(int i) {
+	public void deleteIngredient(int i) {
 		try(Connection connection = DriverManager.getConnection(connectionString)){
-			PreparedStatement statement = connection.prepareStatement("delete from category where id = ?");
+			PreparedStatement statement = connection.prepareStatement("delete from ingredient where id = ?");
 			statement.setInt(1, i);
 			statement.executeUpdate();
-			statement = connection.prepareStatement("delete from parent where idParent = ? or idCategory = ?");
+			statement = connection.prepareStatement("delete from parent where parentId = ? or ingredientId = ?");
 			statement.setInt(1, i);
 			statement.setInt(2, i);
 			statement.executeUpdate();
@@ -228,18 +228,18 @@ public class DBCategoryRepository implements CategoryRepository {
 	}
 	
 	@Override
-	public void validate(Category c) throws CategoryRepositoryException {
-		Category cat = getCategory(c.getCategoryId());
+	public void validate(Ingredient c) throws IngredientRepositoryException {
+		Ingredient cat = getIngredient(c.getIngredientId());
 		if(cat == null){
-			throw new CategoryRepositoryException("Could not find category with id"+c.getCategoryId());
+			throw new IngredientRepositoryException("Could not find ingredient with id"+c.getIngredientId());
 		}
-		for(int parent : c.getParentCategories()){
-			Category parentCategory = getCategory(parent);
+		for(int parent : c.getParentIngredients()){
+			Ingredient parentCategory = getIngredient(parent);
 			if(parentCategory == null){
-				throw new CategoryRepositoryException("Could not find parent category with id"+parent);
+				throw new IngredientRepositoryException("Could not find parent ingredient with id"+parent);
 			}
-			if(parentCategory.getCategoryId() != 0 && !c.getParentCategories().containsAll(parentCategory.getParentCategories())){
-				throw new CategoryRepositoryException("Parent hierarchy is invalid.");
+			if(parentCategory.getIngredientId() != 0 && !c.getParentIngredients().containsAll(parentCategory.getParentIngredients())){
+				throw new IngredientRepositoryException("Parent hierarchy is invalid.");
 			}
 		}
 	}

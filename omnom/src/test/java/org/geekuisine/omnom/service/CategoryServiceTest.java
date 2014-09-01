@@ -1,6 +1,6 @@
 package org.geekuisine.omnom.service;
 
-import org.geekuisine.omnom.domain.Category;
+import org.geekuisine.omnom.domain.Ingredient;
 import org.geekuisine.omnom.repository.impl.DBRepositoryUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class CategoryServiceTest {
 	
 	@Autowired
-	CategoryService categoryService;
+	IngredientService categoryService;
 	
 	public CategoryServiceTest(){
 		System.setProperty("omnom.db.connectionString", "jdbc:sqlite:omnom-test.db");
@@ -34,7 +34,7 @@ public class CategoryServiceTest {
 	
 	@Test
 	public void create_category_should_work(){
-		Category cat = new Category(1000, "newItem");
+		Ingredient cat = new Ingredient(1000, "newItem");
 		Assert.assertNotNull(categoryService.create(cat));
 	}
 	
@@ -50,10 +50,10 @@ public class CategoryServiceTest {
 	
 	@Test
 	public void update_category_should_work(){
-		Category cat = categoryService.read("chicken");
+		Ingredient cat = categoryService.read("chicken");
 		cat.addParentWithoutGrandparents(5);
 		categoryService.update(cat);
-		Assert.assertTrue(categoryService.read("chicken").getParentCategories().contains(5));
+		Assert.assertTrue(categoryService.read("chicken").getParentIngredients().contains(5));
 	}
 	
 	@Test

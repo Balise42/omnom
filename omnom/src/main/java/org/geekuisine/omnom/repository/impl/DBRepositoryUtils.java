@@ -26,11 +26,10 @@ public class DBRepositoryUtils {
 		try{
 			Connection connection = DriverManager.getConnection(connectionString);
 			Statement s = connection.createStatement();
-			s.executeUpdate("drop table parent");
-			s.executeUpdate("drop table category");
-			s.executeUpdate("drop table recipeingredients");
-			s.executeUpdate("drop table ingredient");
-			s.executeUpdate("drop table recipe");
+			s.executeUpdate("drop table if exists parent");
+			s.executeUpdate("drop table if exists recipeingredients");
+			s.executeUpdate("drop table if exists ingredient");
+			s.executeUpdate("drop table if exists recipe");
 			connection.close();
 		}
 		catch(SQLException ex){
@@ -44,26 +43,21 @@ public class DBRepositoryUtils {
 		try{
 			Connection connection = DriverManager.getConnection(connectionString);
 			Statement s = connection.createStatement();
-			s.executeUpdate("CREATE TABLE category(id integer primary key,name text)");
 			s.executeUpdate("CREATE TABLE ingredient(id integer primary key, name text)");
-			s.executeUpdate("CREATE TABLE parent(idCategory integer, idParent integer, primary key(idCategory, idParent))");
+			s.executeUpdate("CREATE TABLE parent(ingredientId integer, parentId integer, primary key(ingredientId, parentId))");
 			s.executeUpdate("CREATE TABLE recipe(id integer primary key, name text, numPersons integer, cookingTime integer, restingTime integer, prepTime integer,steps text)");
-			s.executeUpdate("CREATE TABLE recipeIngredients(idRecipe integer,idIngredient integer,unit varchar(30),numberOfUnits real,fuzzy integer)");
+			s.executeUpdate("CREATE TABLE recipeIngredients(idRecipe integer,ingredientId integer,unit varchar(30),numberOfUnits real,fuzzy integer)");
 
 			
-			s.executeUpdate("INSERT INTO category VALUES(0,'ingredient')");
-			s.executeUpdate("INSERT INTO category VALUES(1,'condiment')");
-			s.executeUpdate("INSERT INTO category VALUES(2,'salt')");
-			s.executeUpdate("INSERT INTO category VALUES(3,'dairy')");
-			s.executeUpdate("INSERT INTO category VALUES(4,'fat')");
-			s.executeUpdate("INSERT INTO category VALUES(5,'meat')");
-			s.executeUpdate("INSERT INTO category VALUES(6,'poultry')");
-			s.executeUpdate("INSERT INTO category VALUES(7,'chicken')");
-			s.executeUpdate("INSERT INTO category VALUES(8,'butter')");
-			
-			s.executeUpdate("INSERT INTO ingredient VALUES(0,'chicken')");
-			s.executeUpdate("INSERT INTO ingredient VALUES(1,'salt')");
-			s.executeUpdate("INSERT INTO ingredient VALUES(2,'butter')");
+			s.executeUpdate("INSERT INTO ingredient VALUES(0,'ingredient')");
+			s.executeUpdate("INSERT INTO ingredient VALUES(1,'condiment')");
+			s.executeUpdate("INSERT INTO ingredient VALUES(2,'salt')");
+			s.executeUpdate("INSERT INTO ingredient VALUES(3,'dairy')");
+			s.executeUpdate("INSERT INTO ingredient VALUES(4,'fat')");
+			s.executeUpdate("INSERT INTO ingredient VALUES(5,'meat')");
+			s.executeUpdate("INSERT INTO ingredient VALUES(6,'poultry')");
+			s.executeUpdate("INSERT INTO ingredient VALUES(7,'chicken')");
+			s.executeUpdate("INSERT INTO ingredient VALUES(8,'butter')");
 
 			s.executeUpdate("INSERT INTO parent VALUES(1,0)");
 			s.executeUpdate("INSERT INTO parent VALUES(2,0)");
