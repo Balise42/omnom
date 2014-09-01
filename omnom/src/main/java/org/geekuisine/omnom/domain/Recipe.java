@@ -1,6 +1,7 @@
 package org.geekuisine.omnom.domain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,5 +95,26 @@ public class Recipe {
 
 	public void setSteps(List<String> steps) {
 		this.steps = steps;
+	}
+
+	/** Sets the cooking time to the duration in minutes*/
+	public void setCookingTime(int minutes) {
+		setCookingTime(Duration.standardMinutes(minutes));
+	}
+	
+	/** Sets the resting time to the duration in minutes */
+	public void setRestTime(int minutes){
+		setRestTime(Duration.standardMinutes(minutes));
+	}
+	
+	/** Sets the prep time to the duration in minutes */
+	public void setPrepTime(int minutes){
+		setRestTime(Duration.standardMinutes(minutes));
+	}
+	
+	/** Splits the string according to newlines, sets the step string 
+	 * as split string. */
+	public void setSteps(String steps){
+		setSteps(Arrays.asList(steps.split("\n")));
 	}
 }

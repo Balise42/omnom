@@ -95,15 +95,15 @@ public class RecipeForm {
 		Recipe recipe = new Recipe();
 		recipe.setName(name);
 		recipe.setNumPersons(numPersons);
-		recipe.setPrepTime(Duration.standardMinutes(prepTime));
-		recipe.setRestTime(Duration.standardMinutes(restTime));
-		recipe.setCookingTime(Duration.standardMinutes(cookingTime));
+		recipe.setPrepTime(prepTime);
+		recipe.setRestTime(restTime);
+		recipe.setCookingTime(cookingTime);
 		HashMap<Ingredient, Quantity> ingredients = new HashMap<Ingredient,Quantity>();
 		for(int i = 0; i<ingredientsList.size(); i++){
 			ingredients.put(ingredientsList.get(i), quantities.get(i));
 		}
 		recipe.setIngredients(ingredients);
-		recipe.setSteps(Arrays.asList(steps.split("\n")));
+		recipe.setSteps(steps);
 		return recipe;
 	}
 }
