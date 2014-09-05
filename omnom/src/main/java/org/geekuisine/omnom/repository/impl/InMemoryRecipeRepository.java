@@ -76,8 +76,15 @@ public class InMemoryRecipeRepository implements RecipeRepository {
 	}
 	
 	@Override
-	public void addRecipe(Recipe recipe){
+	public int addRecipe(Recipe recipe){
 		recipe.setRecipeId(getNextId());
 		recipeRepository.add(recipe);
+		return recipe.getRecipeId();
+	}
+
+	@Override
+	public void setIngredientRepository(
+			IngredientRepository ingredientRepository) {
+		// do nothing
 	}
 }

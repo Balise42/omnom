@@ -34,11 +34,11 @@ public class DBIngredientRepository implements IngredientRepository {
 		try (Connection connection = DriverManager.getConnection(connectionString)) {
 			List<Ingredient> categories = new ArrayList<Ingredient>();
 			Statement statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("select id, name, parentId from ingredient, parent where ingredient.id = parent.ingredientId");
+			ResultSet rs = statement.executeQuery("select id, name, idParent from ingredient, parent where ingredient.id = parent.idIngredient");
 			while (rs.next()) {
 				int id = rs.getInt("id");
 				String name = rs.getString("name");
-				int parent = rs.getInt("parentId");
+				int parent = rs.getInt("idParent");
 				boolean createNew = true;
 				for (int i = 0; i < categories.size(); i++) {
 					if (categories.get(i).getIngredientId() == id) {
@@ -66,18 +66,18 @@ public class DBIngredientRepository implements IngredientRepository {
 	public List<Ingredient> getChildrenIngredients(Ingredient c) {
 		try (Connection connection = DriverManager.getConnection(connectionString)) {
 			List<Ingredient> children = new ArrayList<Ingredient>();
-			PreparedStatement statement = connection.prepareStatement("select id,name from ingredient, parent where ingredient.id = parent.ingredientId and parent.parentId= ?");
+			PreparedStatement statement = connection.prepareStatement("select id,name from ingredient, parent where ingredient.id = parent.idIngredient and parent.idParent= ?");
 			statement.setInt(1, c.getIngredientId());
 			ResultSet rs = statement.executeQuery();
 			while (rs.next()) {
 				int id = rs.getInt("id");
 				String name = rs.getString("name");
 				Ingredient child = new Ingredient(id, name);
-				PreparedStatement statement2 = connection.prepareStatement("select parentId from parent where ingredientId = ?");
+				PreparedStatement statement2 = connection.prepareStatement("select idParent from parent where idIngredient = ?");
 				statement2.setInt(1, id);
 				ResultSet rs2 = statement2.executeQuery();
 				while (rs2.next()) {
-					int idParent = rs2.getInt("parentId");
+					int idParent = rs2.getInt("idParent");
 					child.addParentWithoutGrandparents(idParent);
 				}
 				children.add(child);
@@ -93,7 +93,7 @@ public class DBIngredientRepository implements IngredientRepository {
 	@Override
 	public Ingredient getIngredient(String s) {
 		try (Connection connection = DriverManager.getConnection(connectionString)) {
-			PreparedStatement statement = connection.prepareStatement("select id, name, parentId from ingredient, parent where name = ? and ingredient.id = parent.ingredientId");
+			PreparedStatement statement = connection.prepareStatement("select id, name, idParent from ingredient, parent where name = ? and ingredient.id = parent.idIngredient");
 			statement.setString(1, s);
 
 			ResultSet rs = statement.executeQuery();
@@ -102,7 +102,7 @@ public class DBIngredientRepository implements IngredientRepository {
 				String name = rs.getString("name");
 				Ingredient c = new Ingredient(id, name);
 				do {
-					int idParent = rs.getInt("parentId");
+					int idParent = rs.getInt("idParent");
 					c.addParentWithoutGrandparents(idParent);
 				} while (rs.next());
 				connection.close();
@@ -165,7 +165,7 @@ public class DBIngredientRepository implements IngredientRepository {
 	@Override
 	public Ingredient getIngredient(int i) {
 		try(Connection connection = DriverManager.getConnection(connectionString)){	
-			PreparedStatement statement = connection.prepareStatement("select id, name, parentId from ingredient, parent where id = ? and ingredient.id = parent.ingredientId");
+			PreparedStatement statement = connection.prepareStatement("select id, name, idParent from ingredient, parent where id = ? and ingredient.id = parent.idIngredient");
 			statement.setInt(1, i);
 
 			ResultSet rs = statement.executeQuery();
@@ -174,7 +174,7 @@ public class DBIngredientRepository implements IngredientRepository {
 				String name = rs.getString("name");
 				Ingredient c = new Ingredient(id, name);
 				do {
-					int idParent = rs.getInt("parentId");
+					int idParent = rs.getInt("idParent");
 					c.addParentWithoutGrandparents(idParent);
 				} while (rs.next());
 				connection.close();
@@ -197,7 +197,7 @@ public class DBIngredientRepository implements IngredientRepository {
 			statement.setString(1, c.getName());
 			statement.setInt(2, c.getIngredientId());
 			statement.executeUpdate();
-			statement = connection.prepareStatement("delete from parent where ingredientId = ?");
+			statement = connection.prepareStatement("delete from parent where idIngredient = ?");
 			statement.setInt(1, c.getIngredientId());
 			statement.executeUpdate();
 			for(int parent : c.getParentIngredients()){
@@ -220,7 +220,7 @@ public class DBIngredientRepository implements IngredientRepository {
 			PreparedStatement statement = connection.prepareStatement("delete from ingredient where id = ?");
 			statement.setInt(1, i);
 			statement.executeUpdate();
-			statement = connection.prepareStatement("delete from parent where parentId = ? or ingredientId = ?");
+			statement = connection.prepareStatement("delete from parent where idParent = ? or idIngredient = ?");
 			statement.setInt(1, i);
 			statement.setInt(2, i);
 			statement.executeUpdate();

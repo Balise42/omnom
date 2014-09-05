@@ -21,14 +21,14 @@ public class RecipeController {
 	@RequestMapping("/recipes")
 	/** List all recipes */
 	public String getAllRecipes(Model model){
-		model.addAttribute("recipes", recipeService.getAllRecipes());
+		model.addAttribute("recipes", recipeService.list());
 		return "recipes";
 	}
 	
 	@RequestMapping("/recipe/{id}")
 	/** Displays a recipe by its ID */
 	public String getRecipeById(Model model, @PathVariable("id") int id){
-		model.addAttribute("recipe", recipeService.getRecipeById(id));
+		model.addAttribute("recipe", recipeService.read(id));
 		return "recipe";
 	}
 	
@@ -43,7 +43,7 @@ public class RecipeController {
 	/** Processes the form to add a recipe */
 	public String processRecipe(Model model, @ModelAttribute("newRecipe") RecipeForm recipeForm){
 		Recipe r = recipeForm.getRecipe();
-		recipeService.addRecipe(r);
+		recipeService.create(r);
 		return "redirect:/recipes";
 	}
 }

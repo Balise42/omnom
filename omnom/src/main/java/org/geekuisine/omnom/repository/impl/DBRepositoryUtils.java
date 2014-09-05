@@ -44,9 +44,9 @@ public class DBRepositoryUtils {
 			Connection connection = DriverManager.getConnection(connectionString);
 			Statement s = connection.createStatement();
 			s.executeUpdate("CREATE TABLE ingredient(id integer primary key, name text)");
-			s.executeUpdate("CREATE TABLE parent(ingredientId integer, parentId integer, primary key(ingredientId, parentId))");
+			s.executeUpdate("CREATE TABLE parent(idIngredient integer, idParent integer, primary key(idIngredient, idParent))");
 			s.executeUpdate("CREATE TABLE recipe(id integer primary key, name text, numPersons integer, cookingTime integer, restingTime integer, prepTime integer,steps text)");
-			s.executeUpdate("CREATE TABLE recipeIngredients(idRecipe integer,ingredientId integer,unit varchar(30),numberOfUnits real,fuzzy integer)");
+			s.executeUpdate("CREATE TABLE recipeIngredients(idRecipe integer, idIngredient integer,unit varchar(30),numberOfUnits real,fuzzy integer)");
 
 			
 			s.executeUpdate("INSERT INTO ingredient VALUES(0,'ingredient')");

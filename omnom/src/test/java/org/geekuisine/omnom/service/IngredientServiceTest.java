@@ -14,13 +14,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/test-DispatcherServlet-context.xml")
 @WebAppConfiguration
-/** Integration testing for CategoryService (everything is autowired) */
-public class CategoryServiceTest {
+/** Integration testing for IngredientService (everything is autowired) */
+public class IngredientServiceTest {
 	
 	@Autowired
-	IngredientService categoryService;
+	IngredientService ingredientService;
 	
-	public CategoryServiceTest(){
+	public IngredientServiceTest(){
 		System.setProperty("omnom.db.connectionString", "jdbc:sqlite:omnom-test.db");
 	}
 	
@@ -33,32 +33,32 @@ public class CategoryServiceTest {
 	}
 	
 	@Test
-	public void create_category_should_work(){
+	public void create_ingredient_should_work(){
 		Ingredient cat = new Ingredient(1000, "newItem");
-		Assert.assertNotNull(categoryService.create(cat));
+		Assert.assertNotNull(ingredientService.create(cat));
 	}
 	
 	@Test
-	public void read_category_from_id_should_work(){
-		Assert.assertNotNull(categoryService.read(3));
+	public void read_ingredient_from_id_should_work(){
+		Assert.assertNotNull(ingredientService.read(3));
 	}
 	
 	@Test
-	public void read_category_from_name_should_work(){
-		Assert.assertNotNull(categoryService.read("chicken"));
+	public void read_ingredient_from_name_should_work(){
+		Assert.assertNotNull(ingredientService.read("chicken"));
 	}
 	
 	@Test
-	public void update_category_should_work(){
-		Ingredient cat = categoryService.read("chicken");
+	public void update_ingredient_should_work(){
+		Ingredient cat = ingredientService.read("chicken");
 		cat.addParentWithoutGrandparents(5);
-		categoryService.update(cat);
-		Assert.assertTrue(categoryService.read("chicken").getParentIngredients().contains(5));
+		ingredientService.update(cat);
+		Assert.assertTrue(ingredientService.read("chicken").getParentIngredients().contains(5));
 	}
 	
 	@Test
-	public void delete_category_should_work(){
-		categoryService.delete(3);
-		Assert.assertNull(categoryService.read(3));
+	public void delete_ingredient_should_work(){
+		ingredientService.delete(3);
+		Assert.assertNull(ingredientService.read(3));
 	}
 }

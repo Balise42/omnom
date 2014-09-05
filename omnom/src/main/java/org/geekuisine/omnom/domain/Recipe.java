@@ -31,6 +31,9 @@ public class Recipe {
 		super();
 		ingredients = new HashMap<Ingredient,Quantity>();
 		steps = new ArrayList<String>();
+		cookingTime = Duration.ZERO;
+		prepTime = Duration.ZERO;
+		restTime = Duration.ZERO;
 	}
 
 	public int getRecipeId() {

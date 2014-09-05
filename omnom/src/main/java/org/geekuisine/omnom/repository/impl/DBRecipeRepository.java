@@ -77,7 +77,7 @@ public class DBRecipeRepository implements RecipeRepository {
 			recipe.setPrepTime(rs.getInt("prepTime"));
 			recipe.setRestTime(rs.getInt("restingTime"));
 			recipe.setSteps(rs.getString("steps"));
-			statement = connection.prepareStatement("select ingredientId, unit, numberOfUnits, fuzzy from recipeIngredients where idRecipe = ?");
+			statement = connection.prepareStatement("select idIngredient, unit, numberOfUnits, fuzzy from recipeIngredients where idRecipe = ?");
 			statement.setInt(1, recipeId);
 			rs = statement.executeQuery();
 			while(rs.next()){
@@ -85,7 +85,7 @@ public class DBRecipeRepository implements RecipeRepository {
 				q.setFuzzy(rs.getBoolean("fuzzy"));
 				q.setNumberOfUnits(rs.getBigDecimal("numberOfUnits"));
 				q.setUnit(rs.getString("unit"));
-				Ingredient i = ingredientRepository.getIngredient(rs.getInt("ingredientId"));
+				Ingredient i = ingredientRepository.getIngredient(rs.getInt("idIngredient"));
 				recipe.addIngredient(i, q);
 			}
 			connection.close();
@@ -98,8 +98,68 @@ public class DBRecipeRepository implements RecipeRepository {
 	}
 
 	@Override
-	public void addRecipe(Recipe r) {
-		// TODO Auto-generated method stub
+	public int addRecipe(Recipe r) {
+		int recipeId = getNextIdAndIncrement();
+		try(Connection connection = DriverManager.getConnection(connectionString)){
+			PreparedStatement statement = connection.prepareStatement("insert into recipe (id, name, numPersons, cookingTime, restingTime, prepTime, steps) values (?,?,?,?,?,?,?)");
+			statement.setInt(1, recipeId);
+			statement.setString(2, r.getName());
+			statement.setInt(3, r.getNumPersons());
+			statement.setLong(4, r.getCookingTime().getStandardMinutes());
+			statement.setLong(5, r.getRestTime().getStandardMinutes());
+			statement.setLong(6, r.getPrepTime().getStandardMinutes());
+			String steps = "";
+			for(String step : r.getSteps()){
+				steps = steps + step + "\n";
+			}
+			statement.setString(7, steps);
+			statement.executeUpdate();
+			
+			for(Ingredient i : r.getIngredients().keySet()){
+				statement = connection.prepareStatement("insert into recipeIngredients (idRecipe, idIngredient, unit, numberOfUnits, fuzzy) values (?,?,?,?,?)");
+				statement.setInt(1, recipeId);
+				statement.setInt(2, i.getIngredientId());
+				Quantity q = r.getIngredients().get(i);
+				statement.setString(3, q.getUnit());
+				statement.setBigDecimal(4, q.getNumberOfUnits());
+				statement.setBoolean(5, q.isFuzzy());
+				statement.executeUpdate();
+			}
+			connection.close();
+			return recipeId;
+		}
+		catch(SQLException ex){
+			ex.printStackTrace();
+			return -1;
+		}
+		
+	}
+	
+	/** Gets the ID of the last recipe that has been added to the DB, returns the ID
+	 * of the next recipe to be inserted in the DB. 
+	 * TODO fix race condition as said ID is not reserved... */
+	private synchronized int getNextIdAndIncrement() {
+		int nextId = 0;
+		try (Connection connection = DriverManager.getConnection(connectionString);){
+			Statement statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery("select max(id) as maxRec from recipe");
+			if (rs.next()) {
+				nextId = rs.getInt("maxRec") + 1;
+			} else {
+				throw (new SQLException("Couldn't get next id"));
+			}
+			connection.close();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+		return nextId;
+	}
+
+	@Override
+	public void setIngredientRepository(
+			IngredientRepository ingredientRepository) {
+		this.ingredientRepository = ingredientRepository;
 		
 	}
 

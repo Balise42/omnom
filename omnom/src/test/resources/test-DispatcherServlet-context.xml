@@ -12,8 +12,6 @@
 		
 <mvc:annotation-driven />
 <context:component-scan base-package="org.geekuisine.omnom"/>
-<bean id="categoryService" class="org.geekuisine.omnom.service.impl.CategoryServiceImpl"/>
+<bean id="ingredientService" class="org.geekuisine.omnom.service.impl.IngredientServiceImpl"/>
 
 </beans>
-	
-	
