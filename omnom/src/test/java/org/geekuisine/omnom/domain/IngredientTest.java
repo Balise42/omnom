@@ -19,15 +19,7 @@ public class IngredientTest {
 	@Test
 	public void addParent_should_add_parent_category(){
 		butter.addParent(dairy);
-		Assert.assertEquals(butter.getParentIngredients().size(), 3);
-	}
-	
-	@Test
-	public void addParent_should_add_all_parents(){
-		butter.addParent(dairy);
-		Ingredient saltbutter = new Ingredient(4, "salted butter");
-		saltbutter.addParent(butter);
-		Assert.assertEquals(saltbutter.getParentIngredients().size(), 4);
+		Assert.assertEquals(butter.getParentIngredients().size(), 2);
 	}
 
 }

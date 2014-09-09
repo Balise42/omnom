@@ -2,6 +2,7 @@ package org.geekuisine.omnom.repository.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.geekuisine.omnom.domain.Ingredient;
 import org.geekuisine.omnom.repository.IngredientRepository;
@@ -11,44 +12,52 @@ import org.springframework.stereotype.Repository;
 //@Repository
 /** First implementation of the category repository - stays in memory, no persistent storage.
  * Not for production use, only for dev purpose.
- * Should probably be implemented as singleton if it were to be used in any useful way. */
+ * Should probably be implemented as singleton if it were to be used in any useful way. 
+ * @deprecated feature compatibility with DB repository not guaranteed since Sep. 8th 2014 */
 public class InMemoryIngredientRepository implements IngredientRepository {
 	/** List of categories */
-	List<Ingredient> categoryRepository;
+	List<Ingredient> ingredientRepository;
 	/** ID of the next category when added to the repository */
 	int nextId;
 
 	/** Default constructor: creates the repository and adds some data to it */
 	public InMemoryIngredientRepository(){
 		nextId = 0;
-		categoryRepository = new ArrayList<Ingredient>();
+		ingredientRepository = new ArrayList<Ingredient>();
 		Ingredient ingredient = new Ingredient(getNextId(), "Ingredient");
-		categoryRepository.add(ingredient);
+		ingredientRepository.add(ingredient);
 		
-		Ingredient poultry = new Ingredient(getNextId(), "Poultry", ingredient);
-		Ingredient chicken = new Ingredient(getNextId(), "Chicken", poultry);
-		Ingredient duck = new Ingredient(getNextId(), "Duck", poultry);
-		Ingredient chickenLeg = new Ingredient(getNextId(), "Chicken leg", chicken);
-		Ingredient meat = new Ingredient(getNextId(), "Meat",ingredient);
-		Ingredient condiment = new Ingredient(getNextId(), "Condiment", ingredient);
-		Ingredient salt = new Ingredient(getNextId(), "Salt", condiment);
-		Ingredient fat = new Ingredient(getNextId(), "Fat", ingredient);
-		Ingredient butter = new Ingredient(getNextId(), "Butter", fat);
-		categoryRepository.add(poultry);
-		categoryRepository.add(chicken);
-		categoryRepository.add(duck);
-		categoryRepository.add(chickenLeg);
-		categoryRepository.add(meat);
-		categoryRepository.add(condiment);
-		categoryRepository.add(salt);
-		categoryRepository.add(fat);
-		categoryRepository.add(butter);
+		Ingredient poultry = new Ingredient(getNextId(), "POULTRY");
+		Ingredient chicken = new Ingredient(getNextId(), "CHICKEN");
+		Ingredient chickenLeg = new Ingredient(getNextId(), "CHICKEN LEG");
+		Ingredient meat = new Ingredient(getNextId(), "MEAT");
+		Ingredient condiment = new Ingredient(getNextId(), "CONDIMENT");
+		Ingredient salt = new Ingredient(getNextId(), "SALT");
+		Ingredient fat = new Ingredient(getNextId(), "FAT");
+		Ingredient butter = new Ingredient(getNextId(), "BUTTER");
+		ingredientRepository.add(poultry);
+		
+		ingredientRepository.add(chicken);
+		ingredientRepository.add(chickenLeg);
+		ingredientRepository.add(meat);
+		ingredientRepository.add(condiment);
+		ingredientRepository.add(salt);
+		ingredientRepository.add(fat);
+		ingredientRepository.add(butter);
+		
+	}
+	
+	public void setParent(Ingredient ingredient, Ingredient parent){
+		
+	}
+	
+	private void addParentRelationship(){
 		
 	}
 	
 	@Override
 	public Ingredient getIngredient(String s){
-		for(Ingredient cat : categoryRepository){
+		for(Ingredient cat : ingredientRepository){
 			if(cat.getName().equalsIgnoreCase(s)){
 				return cat;
 			}
@@ -58,13 +67,13 @@ public class InMemoryIngredientRepository implements IngredientRepository {
 	
 	@Override
 	public List<Ingredient> getAllIngredients() {
-		return categoryRepository;
+		return ingredientRepository;
 	}
 	
 	@Override
 	public List<Ingredient> getChildrenIngredients(Ingredient c){
 		List<Ingredient> children = new ArrayList<Ingredient>();
-		for(Ingredient cat : categoryRepository){
+		for(Ingredient cat : ingredientRepository){
 			if(cat.getParentIngredients().contains(c.getIngredientId())){
 				children.add(cat);
 			}
@@ -82,14 +91,14 @@ public class InMemoryIngredientRepository implements IngredientRepository {
 		if(c != null){
 			return c;
 		}
-		c = new Ingredient(getNextId(), s);
-		categoryRepository.add(c);
+		c = new Ingredient(getNextId(), s.toUpperCase(Locale.ENGLISH));
+		ingredientRepository.add(c);
 		return c;
 	}
 
 	@Override
 	public Ingredient getIngredient(int i) {
-		for(Ingredient cat : categoryRepository){
+		for(Ingredient cat : ingredientRepository){
 			if(cat.getIngredientId() == i){
 				return cat;
 			}
@@ -100,9 +109,10 @@ public class InMemoryIngredientRepository implements IngredientRepository {
 	@Override
 	public void updateIngredient(Ingredient c) throws IngredientRepositoryException {
 		validate(c);
-		for(int i = 0; i<categoryRepository.size(); i++){
-			if(categoryRepository.get(i).getIngredientId() == c.getIngredientId()){
-				categoryRepository.set(i,  c);
+		for(int i = 0; i<ingredientRepository.size(); i++){
+			if(ingredientRepository.get(i).getIngredientId() == c.getIngredientId()){
+				c.setName(c.getName().toUpperCase());
+				ingredientRepository.set(i,  c);
 				return;
 			}
 		}
@@ -110,9 +120,9 @@ public class InMemoryIngredientRepository implements IngredientRepository {
 
 	@Override
 	public void deleteIngredient(int index) {
-		for(int i = 0; i<categoryRepository.size(); i++){
-			if(categoryRepository.get(i).getIngredientId() == index){
-				categoryRepository.remove(i);
+		for(int i = 0; i<ingredientRepository.size(); i++){
+			if(ingredientRepository.get(i).getIngredientId() == index){
+				ingredientRepository.remove(i);
 				return;
 			}
 		}

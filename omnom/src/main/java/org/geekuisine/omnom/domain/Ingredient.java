@@ -4,7 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /** A class for ingredients (e.g. "chicken", "butter", "meat", "fat", "condiment", etc). 
- * Allows a DAG structure by storing the parent ingredients. */
+ * Allows a DAG structure by storing the parent ingredients. No validation whatsoever
+ * on the hierarchy is done at this level, this is purely for storage purpose. */
 
 public class Ingredient {
 	/** ID of the ingredient. Typically attributed by the repository. */
@@ -14,28 +15,32 @@ public class Ingredient {
 	/** IDs of the parent ingredient */
 	Set<Integer> parentIngredients;
 	
-	/** Default constructor. Every category is derived from ingredient "0" which represents "ingredient". */
+	/** Default constructor. Just creates the underlying structure. */
 	public Ingredient(){
 		parentIngredients = new HashSet<Integer>();
-		parentIngredients.add(0);
 	}
 	
-	/** Constructor with ID and name, no parent (will add "0" as a parent)*/
+	/** Constructor with ID and name, no parent (uses "0" as a parent)*/
 	public Ingredient(int ingredientId, String name){
-		this(name);
-		this.ingredientId = ingredientId;
+		this(ingredientId, name, 0);
 	}
 	
-	/** Constructor with name, no parent (will add "0" as a parent)*/
+	/** Constructor with name, no parent (uses "0" as a parent)*/
 	public Ingredient(String name){
+		this(-1, name, 0);
+	}
+	
+	/** Constructor with id, name, and parent */
+	public Ingredient(int ingredientId, String name, Ingredient parent){
+		this(ingredientId, name, parent.getIngredientId());
+	}
+	
+	/** Constructor with id, name and parent ID */
+	public Ingredient(int ingredientId, String name, int parentId){
 		this();
 		this.name = name;
-	}
-	
-	/** Constructor with name, id and one parent */
-	public Ingredient(int ingredientId, String name, Ingredient parent){
-		this(ingredientId, name);
-		addParent(parent);
+		this.ingredientId = ingredientId;
+		this.parentIngredients.add(parentId);
 	}
 
 	public int getIngredientId() {
@@ -61,19 +66,16 @@ public class Ingredient {
 	public void setParentCategories(Set<Integer> parents){
 		parentIngredients = parents;
 	}
+
 	
-	/** Add an ingredient  as a parent. Also adds the parents of that ingredient as parents.
-	 Parent ingredient is supposed to be valid. */
-	public void addParent(Ingredient parent){
-		parentIngredients.add(parent.ingredientId);
-		if(parent.ingredientId != 0){
-			parentIngredients.addAll(parent.getParentIngredients());
-		}
+	/** Add a parent ID to the list of parents. */
+	public void addParent(int parentId){
+		parentIngredients.add(parentId);
 	}
 	
-	/** Add a parent ID to the list of parents. Doesn't do any check! */
-	public void addParentWithoutGrandparents(int parent){
-		parentIngredients.add(parent);
+	/** Add a parent to the list of parents (just add the ID) */
+	public void addParent(Ingredient parent){
+		parentIngredients.add(parent.getIngredientId());
 	}
 
 }

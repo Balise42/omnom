@@ -83,7 +83,7 @@ public class IngredientRepositoryTest {
 	@Test
 	public void updateIngredient_should_work(){
 		Ingredient c = rep.getIngredient("chicken");
-		c.addParentWithoutGrandparents(5);
+		c.addParent(5);
 		rep.updateIngredient(c);
 		Assert.assertTrue(rep.getIngredient("chicken").getParentIngredients().contains(5));
 	}
@@ -100,7 +100,7 @@ public class IngredientRepositoryTest {
 	@Test(expected=IngredientRepositoryException.class)
 	public void updateIngredient_with_invalid_parent_should_throw(){
 		Ingredient c = rep.getIngredient("chicken");
-		c.addParentWithoutGrandparents(90);
+		c.addParent(90);
 		rep.updateIngredient(c);
 		Assert.fail();
 	}

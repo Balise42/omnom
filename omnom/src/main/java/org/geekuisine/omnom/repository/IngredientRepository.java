@@ -7,14 +7,13 @@ import org.geekuisine.omnom.repository.exception.IngredientRepositoryException;
 
 /** Interface that should be implemented by ingredient repositories */
 public interface IngredientRepository {
-	/** Get a list of all categories */
+	/** Get a list of all ingredients */
 	public List<Ingredient> getAllIngredients();
-	/** Get a list of the children categories of a given ingredient */
+	/** Get a list of the children ingredients of a given ingredient */
 	public List<Ingredient> getChildrenIngredients(Ingredient c);
 	/** Returns a (full) ingredient object corresponding to a name, or null if it doesn't exist */
 	public Ingredient getIngredient(String s);
 	/** Adds a ingredient for a new ingredient name, or returns the existing ingredient if it already exists. 
-	 * TODO: currently doesn't handle the case!!
 	 * */
 	public Ingredient addIngredient(String s);
 	/** Returns a (full) ingredient object corresponding to an ID, or null if it doesn't exist */

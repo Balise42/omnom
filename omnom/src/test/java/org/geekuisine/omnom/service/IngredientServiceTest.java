@@ -51,7 +51,7 @@ public class IngredientServiceTest {
 	@Test
 	public void update_ingredient_should_work(){
 		Ingredient cat = ingredientService.read("chicken");
-		cat.addParentWithoutGrandparents(5);
+		cat.addParent(5);
 		ingredientService.update(cat);
 		Assert.assertTrue(ingredientService.read("chicken").getParentIngredients().contains(5));
 	}

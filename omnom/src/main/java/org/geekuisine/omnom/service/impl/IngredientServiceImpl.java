@@ -21,7 +21,7 @@ public class IngredientServiceImpl implements IngredientService {
 	public Ingredient create(Ingredient category) {
 		Ingredient newCategory = repository.addIngredient(category.getName());
 		newCategory.setParentCategories(category.getParentIngredients());
-		newCategory.addParentWithoutGrandparents(0);
+		newCategory.addParent(0);
 		update(newCategory);
 		return read(category.getName());
 	}

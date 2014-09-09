@@ -49,27 +49,23 @@ public class DBRepositoryUtils {
 			s.executeUpdate("CREATE TABLE recipeIngredients(idRecipe integer, idIngredient integer,unit varchar(30),numberOfUnits real,fuzzy integer)");
 
 			
-			s.executeUpdate("INSERT INTO ingredient VALUES(0,'ingredient')");
-			s.executeUpdate("INSERT INTO ingredient VALUES(1,'condiment')");
-			s.executeUpdate("INSERT INTO ingredient VALUES(2,'salt')");
-			s.executeUpdate("INSERT INTO ingredient VALUES(3,'dairy')");
-			s.executeUpdate("INSERT INTO ingredient VALUES(4,'fat')");
-			s.executeUpdate("INSERT INTO ingredient VALUES(5,'meat')");
-			s.executeUpdate("INSERT INTO ingredient VALUES(6,'poultry')");
-			s.executeUpdate("INSERT INTO ingredient VALUES(7,'chicken')");
-			s.executeUpdate("INSERT INTO ingredient VALUES(8,'butter')");
+			s.executeUpdate("INSERT INTO ingredient VALUES(0,'INGREDIENT')");
+			s.executeUpdate("INSERT INTO ingredient VALUES(1,'CONDIMENT')");
+			s.executeUpdate("INSERT INTO ingredient VALUES(2,'SALT')");
+			s.executeUpdate("INSERT INTO ingredient VALUES(3,'DAIRY')");
+			s.executeUpdate("INSERT INTO ingredient VALUES(4,'FAT')");
+			s.executeUpdate("INSERT INTO ingredient VALUES(5,'MEAT')");
+			s.executeUpdate("INSERT INTO ingredient VALUES(6,'POULTRY')");
+			s.executeUpdate("INSERT INTO ingredient VALUES(7,'CHICKEN')");
+			s.executeUpdate("INSERT INTO ingredient VALUES(8,'BUTTER')");
 
 			s.executeUpdate("INSERT INTO parent VALUES(1,0)");
-			s.executeUpdate("INSERT INTO parent VALUES(2,0)");
 			s.executeUpdate("INSERT INTO parent VALUES(2,1)");
 			s.executeUpdate("INSERT INTO parent VALUES(3,0)");
 			s.executeUpdate("INSERT INTO parent VALUES(4,0)");
 			s.executeUpdate("INSERT INTO parent VALUES(5,0)");
-			s.executeUpdate("INSERT INTO parent VALUES(6,0)");
 			s.executeUpdate("INSERT INTO parent VALUES(6,5)");
-			s.executeUpdate("INSERT INTO parent VALUES(7,0)");
 			s.executeUpdate("INSERT INTO parent VALUES(7,6)");
-			s.executeUpdate("INSERT INTO parent VALUES(8,0)");
 			s.executeUpdate("INSERT INTO parent VALUES(8,3)");
 			s.executeUpdate("INSERT INTO parent VALUES(8,4)");
 			s.executeUpdate("INSERT INTO parent VALUES(0,0)");

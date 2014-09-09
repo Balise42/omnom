@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.geekuisine.omnom.domain.Ingredient;
 import org.geekuisine.omnom.repository.IngredientRepository;
@@ -43,14 +44,14 @@ public class DBIngredientRepository implements IngredientRepository {
 				for (int i = 0; i < categories.size(); i++) {
 					if (categories.get(i).getIngredientId() == id) {
 						Ingredient category = categories.get(i);
-						category.addParentWithoutGrandparents(parent);
+						category.addParent(parent);
 						categories.set(i, category);
 						createNew = false;
 					}
 				}
 				if (createNew) {
 					Ingredient category = new Ingredient(id, name);
-					category.addParentWithoutGrandparents(parent);
+					category.addParent(parent);
 					categories.add(category);
 				}
 			}
@@ -78,7 +79,7 @@ public class DBIngredientRepository implements IngredientRepository {
 				ResultSet rs2 = statement2.executeQuery();
 				while (rs2.next()) {
 					int idParent = rs2.getInt("idParent");
-					child.addParentWithoutGrandparents(idParent);
+					child.addParent(idParent);
 				}
 				children.add(child);
 			}
@@ -94,7 +95,7 @@ public class DBIngredientRepository implements IngredientRepository {
 	public Ingredient getIngredient(String s) {
 		try (Connection connection = DriverManager.getConnection(connectionString)) {
 			PreparedStatement statement = connection.prepareStatement("select id, name, idParent from ingredient, parent where name = ? and ingredient.id = parent.idIngredient");
-			statement.setString(1, s);
+			statement.setString(1, s.toUpperCase(Locale.ENGLISH));
 
 			ResultSet rs = statement.executeQuery();
 			if (rs.next()) {
@@ -103,7 +104,7 @@ public class DBIngredientRepository implements IngredientRepository {
 				Ingredient c = new Ingredient(id, name);
 				do {
 					int idParent = rs.getInt("idParent");
-					c.addParentWithoutGrandparents(idParent);
+					c.addParent(idParent);
 				} while (rs.next());
 				connection.close();
 				return c;
@@ -127,7 +128,7 @@ public class DBIngredientRepository implements IngredientRepository {
 				int idNewCategory = getNextIdAndIncrement();
 				PreparedStatement statement = connection.prepareStatement("insert into ingredient values (?, ?)");
 				statement.setInt(1, idNewCategory);
-				statement.setString(2, s);
+				statement.setString(2, s.toUpperCase(Locale.ENGLISH));
 				statement.executeUpdate();
 				statement = connection.prepareStatement("insert into parent values (?, 0)");
 				statement.setInt(1, idNewCategory);
@@ -175,7 +176,7 @@ public class DBIngredientRepository implements IngredientRepository {
 				Ingredient c = new Ingredient(id, name);
 				do {
 					int idParent = rs.getInt("idParent");
-					c.addParentWithoutGrandparents(idParent);
+					c.addParent(idParent);
 				} while (rs.next());
 				connection.close();
 				return c;
@@ -194,7 +195,7 @@ public class DBIngredientRepository implements IngredientRepository {
 		validate(c);
 		try(Connection connection = DriverManager.getConnection(connectionString)){
 			PreparedStatement statement = connection.prepareStatement("update ingredient set name = ? where id = ? ");
-			statement.setString(1, c.getName());
+			statement.setString(1, c.getName().toUpperCase(Locale.ENGLISH));
 			statement.setInt(2, c.getIngredientId());
 			statement.executeUpdate();
 			statement = connection.prepareStatement("delete from parent where idIngredient = ?");
@@ -216,6 +217,13 @@ public class DBIngredientRepository implements IngredientRepository {
 
 	@Override
 	public void deleteIngredient(int i) {
+		Ingredient ingredient = getIngredient(i);
+		for(int parent : ingredient.getParentIngredients()){
+			for(Ingredient child : getChildrenIngredients(ingredient)){
+				child.addParent(parent);
+				updateIngredient(child);
+			}
+		}
 		try(Connection connection = DriverManager.getConnection(connectionString)){
 			PreparedStatement statement = connection.prepareStatement("delete from ingredient where id = ?");
 			statement.setInt(1, i);
@@ -240,9 +248,6 @@ public class DBIngredientRepository implements IngredientRepository {
 			Ingredient parentCategory = getIngredient(parent);
 			if(parentCategory == null){
 				throw new IngredientRepositoryException("Could not find parent ingredient with id"+parent);
-			}
-			if(parentCategory.getIngredientId() != 0 && !c.getParentIngredients().containsAll(parentCategory.getParentIngredients())){
-				throw new IngredientRepositoryException("Parent hierarchy is invalid.");
 			}
 		}
 	}

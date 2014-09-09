@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 
 <section class="container">
@@ -11,7 +12,7 @@
 		<p>Ingredients:</p>
 		<ul>
 			<c:forEach items="${recipe.ingredients}" var="ingredient">
-				<li>${ingredient.key.name}:${ingredient.value.numberOfUnits}
+				<li><span style="text-transform: capitalize">${fn:toLowerCase(ingredient.key.name)}</span>:${ingredient.value.numberOfUnits}
 					${ingredient.value.unit}</li>
 			</c:forEach>
 		</ul>
