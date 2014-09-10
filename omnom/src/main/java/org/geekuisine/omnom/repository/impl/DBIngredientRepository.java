@@ -6,9 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Queue;
 
 import org.geekuisine.omnom.domain.Ingredient;
 import org.geekuisine.omnom.repository.IngredientRepository;
@@ -89,6 +93,29 @@ public class DBIngredientRepository implements IngredientRepository {
 			ex.printStackTrace();
 			return null;
 		}
+	}
+	
+	public List<Ingredient> getAllChildren(Ingredient c){
+		Queue<Integer> childrenQueue = new ArrayDeque<Integer>();
+		Map<Integer,Boolean> visited = new HashMap<Integer,Boolean>();
+		List<Ingredient> result = new ArrayList<Ingredient>();
+		List<Ingredient> children = getChildrenIngredients(c);
+		for(Ingredient child : children){
+			childrenQueue.add(child.getIngredientId());
+		}
+		while(!childrenQueue.isEmpty()){
+			int childId = childrenQueue.remove();
+			if(!visited.containsKey(childId) || !visited.get(childId)){
+				Ingredient ingredient = getIngredient(childId);
+				List<Ingredient> childChildren = getChildrenIngredients(ingredient);
+				for(Ingredient childChild : childChildren){
+					childrenQueue.add(childChild.getIngredientId());
+				}
+				result.add(ingredient);
+				visited.put(childId, true);
+			}
+		}
+		return result;
 	}
 
 	@Override

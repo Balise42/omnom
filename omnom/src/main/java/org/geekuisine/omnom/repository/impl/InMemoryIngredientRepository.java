@@ -143,4 +143,10 @@ public class InMemoryIngredientRepository implements IngredientRepository {
 			}
 		}
 	}
+
+	@Override
+	public List<Ingredient> getAllChildren(Ingredient c) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

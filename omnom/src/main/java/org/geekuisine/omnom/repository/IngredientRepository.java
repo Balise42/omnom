@@ -24,4 +24,7 @@ public interface IngredientRepository {
 	public void deleteIngredient(int i);	
 	/** Validates a ingredient: checks that its ID exists and that the parent hierarchy is valid */
 	public void validate(Ingredient c) throws IngredientRepositoryException;
+	/** Returns the list of all children, grandchildren, grandgrandchildren... of the hierarchy */
+	public List<Ingredient> getAllChildren(Ingredient c);
+	
 }
