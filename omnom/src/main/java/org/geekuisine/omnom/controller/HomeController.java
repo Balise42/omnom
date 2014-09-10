@@ -21,7 +21,7 @@ public class HomeController {
 		System.setProperty("omnom.db.connectionString", "jdbc:sqlite:omnom.db");
 		DBRepositoryUtils utils = new DBRepositoryUtils();
 		utils.dropAllTables();
-		utils.populate();
+		utils.populate_with_dummy();
 		return "welcome";
 	}
 }

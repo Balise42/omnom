@@ -1,9 +1,15 @@
 package org.geekuisine.omnom.repository.impl;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
+
+import org.geekuisine.omnom.domain.Ingredient;
 
 /** Utils to empty and re-populate the DB repositories. 
  * Should not be used during normal operations. */
@@ -39,7 +45,7 @@ public class DBRepositoryUtils {
 	}
 	
 	/** Creates the DB structure and populates it with a few base elements */
-	public void populate(){
+	public void populate_with_dummy(){
 		try{
 			Connection connection = DriverManager.getConnection(connectionString);
 			Statement s = connection.createStatement();
@@ -74,6 +80,43 @@ public class DBRepositoryUtils {
 			s.executeUpdate("INSERT INTO recipeIngredients VALUES(0, 2, 'large pinch', 1, 1)");
 			s.executeUpdate("INSERT INTO recipeIngredients VALUES(0, 7, 'chicken', 1, 0)");
 			s.executeUpdate("INSERT INTO recipeIngredients VALUES(0, 8, 'tbsp', 1, 0)");
+			
+			connection.close();
+		}
+		catch(SQLException ex){
+			ex.printStackTrace();
+			System.exit(-1);
+		}
+	}
+	
+	/** Fetches the ingredient data from Freebase, and populates the ingredient DB accordingly. 
+	 * @throws IOException 
+	 * @throws GeneralSecurityException */
+	public void populate_with_freebase() throws GeneralSecurityException, IOException{
+		try{
+			Connection connection = DriverManager.getConnection(connectionString);
+			Statement s = connection.createStatement();
+			s.executeUpdate("CREATE TABLE ingredient(id integer primary key, name text)");
+			s.executeUpdate("CREATE TABLE parent(idIngredient integer, idParent integer, primary key(idIngredient, idParent))");
+			s.executeUpdate("CREATE TABLE recipe(id integer primary key, name text, numPersons integer, cookingTime integer, restingTime integer, prepTime integer,steps text)");
+			s.executeUpdate("CREATE TABLE recipeIngredients(idRecipe integer, idIngredient integer,unit varchar(30),numberOfUnits real,fuzzy integer)");
+			
+			
+			FreebaseUtils freebase = new FreebaseUtils();
+			freebase.fetchIngredients();
+			List<Ingredient> ingredients = freebase.getIngredients();
+			for(Ingredient ingredient : ingredients){
+				PreparedStatement statement = connection.prepareStatement("INSERT INTO ingredient VALUES(?,?)");
+				statement.setInt(1, ingredient.getIngredientId());
+				statement.setString(2, ingredient.getName());
+				statement.executeUpdate();
+				for(int parent : ingredient.getParentIngredients()){
+					statement = connection.prepareStatement("INSERT INTO parent VALUES (?,?)");
+					statement.setInt(1, ingredient.getIngredientId());
+					statement.setInt(2, parent);
+					statement.executeUpdate();
+				}
+			}
 			
 			connection.close();
 		}

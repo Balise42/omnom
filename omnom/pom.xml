@@ -60,6 +60,19 @@
   		<artifactId>sqlite-jdbc</artifactId>
   		<version>3.8.5-pre1</version>
   	</dependency>
+  	
+    <dependency>
+    	<groupId>com.google.api-client</groupId>
+        <artifactId>google-api-client</artifactId>
+        <version>1.18.0-rc</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.google.http-client</groupId>
+      <artifactId>google-http-client-jackson2</artifactId>
+      <version>1.18.0-rc</version>
+    </dependency>
+  	
   </dependencies>
   <properties>
   	<maven.compiler.source>1.7</maven.compiler.source>

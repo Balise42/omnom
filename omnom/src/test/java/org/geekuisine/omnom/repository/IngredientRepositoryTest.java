@@ -24,7 +24,7 @@ public class IngredientRepositoryTest {
 		rep = new DBIngredientRepository();
 		DBRepositoryUtils dbutils = new DBRepositoryUtils();
 		dbutils.dropAllTables();
-		dbutils.populate();
+		dbutils.populate_with_dummy();
 		poultry = rep.getIngredient("poultry");
 	}
 	
@@ -117,6 +117,13 @@ public class IngredientRepositoryTest {
 		rep.deleteIngredient(6);
 		Ingredient c = rep.getIngredient("chicken");
 		Assert.assertFalse(c.getParentIngredients().contains(6));
+	}
+	
+	@Test
+	public void getAllChildren_of_ingredient_should_return_all_ingredients() {
+		Ingredient ingredient = rep.getIngredient(0);
+		List<Ingredient> allChildren = rep.getAllChildren(ingredient);
+		Assert.assertTrue(allChildren.size() == rep.getAllIngredients().size());
 	}
 	
 }

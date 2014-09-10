@@ -24,7 +24,7 @@ public class RecipeRepositoryTest {
 		System.setProperty("omnom.db.connectionString", "jdbc:sqlite:omnom-test.db");
 		DBRepositoryUtils dbutils = new DBRepositoryUtils();
 		dbutils.dropAllTables();
-		dbutils.populate();
+		dbutils.populate_with_dummy();
 		recipeRepository = new DBRecipeRepository();
 		recipeRepository.setIngredientRepository(new DBIngredientRepository());
 	}
