@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.util.List;
 
 import org.geekuisine.omnom.domain.Ingredient;
+import org.geekuisine.omnom.repository.freebase.FreebaseUtils;
 
 /** Utils to empty and re-populate the DB repositories. 
  * Should not be used during normal operations. */
@@ -104,7 +105,9 @@ public class DBRepositoryUtils {
 			
 			FreebaseUtils freebase = new FreebaseUtils();
 			freebase.fetchIngredients();
+			freebase.jsonIngredientsToIngredients();
 			List<Ingredient> ingredients = freebase.getIngredients();
+			
 			for(Ingredient ingredient : ingredients){
 				PreparedStatement statement = connection.prepareStatement("INSERT INTO ingredient VALUES(?,?)");
 				statement.setInt(1, ingredient.getIngredientId());
